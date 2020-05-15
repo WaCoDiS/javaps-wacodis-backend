@@ -118,6 +118,9 @@ public class SentinelFileDownloader {
         };
 
         ResponseExtractor<File> responseExtractor = (ClientHttpResponse response) -> {
+            if (response.getHeaders().getContentLength() == 0) {
+                throw new IOException(String.format("No Sentinel file available for URL '%s' is not available.", url));
+            }
             String fileName = response.getHeaders().getContentDisposition().getFilename();
             File imageFile = new File(outPath + "/" + fileName);
             FileUtils.copyInputStreamToFile(response.getBody(), imageFile);
@@ -178,7 +181,7 @@ public class SentinelFileDownloader {
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 File entryDestination = new File(outPath, entry.getName());
-                if(firstEntry){
+                if (firstEntry) {
                     unzippedFile = entryDestination;
                     firstEntry = false;
                 }
