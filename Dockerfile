@@ -11,8 +11,8 @@ ARG CACHE_DATE=not_a_date
 # for the moment we still use the wacodis fork, but only until the PR
 # is merged (https://github.com/52North/javaPS/pull/52)
 # then --> 52North/javaps:develop branch should be
-RUN git clone https://github.com/52North/javaPS.git javaps \
- 	&& git -C ./javaps checkout develop
+RUN git clone https://github.com/WaCoDiS/javaPS.git javaps \
+ 	&& git -C ./javaps checkout wacodis-developments
 
 RUN mvn -f ./javaps/pom.xml clean install -DskipTests -pl !webapp
 
