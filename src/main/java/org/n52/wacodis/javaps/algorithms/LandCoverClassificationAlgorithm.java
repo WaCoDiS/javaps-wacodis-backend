@@ -187,9 +187,11 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
                     }
                 });
             } catch (IOException ex) {
-                LOGGER.error("Error while retrieving Sentinel file: {}", ois, ex);
+                LOGGER.error("Error while retrieving Sentinel file: {}. Cause: {}", ois, ex.getMessage());
+                LOGGER.debug("Error while retrieving Sentinel file: {}.", ois, ex);
             } catch (WacodisProcessingException ex) {
-                LOGGER.error("Error while preprocessing Sentinel file: {}", ois, ex);
+                LOGGER.error("Error while preprocessing Sentinel file: {}. Cause: {}", ois, ex);
+                LOGGER.debug("Error while preprocessing Sentinel file: {}.", ois, ex);
             }
         });
         if (preprocessedImages.isEmpty()) {
