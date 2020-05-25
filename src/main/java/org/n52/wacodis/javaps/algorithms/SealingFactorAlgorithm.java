@@ -145,7 +145,7 @@ public class SealingFactorAlgorithm extends AbstractAlgorithm {
         String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
         InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_maskingdata_" + fileIdentifier + ".shp"));
 
-        InputDataOperator reprojectingOperator = new ReprojectingOperator(GeometryUtils.DEFAULT_INPUT_EPSG);
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(this.getBackendConfig().getEpsg());
         List<InputDataOperator> referenceDataOperatorList = new ArrayList<>();
         referenceDataOperatorList.add(reprojectingOperator);
 
