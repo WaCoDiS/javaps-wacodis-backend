@@ -13,6 +13,7 @@
         <iohandler.version>1.4.0</iohandler.version>
         <geotools.version>20.2</geotools.version>
         <snap.version>7.0.3</snap.version>
+        <s1tbx.version>7.0.1</s1tbx.version>
         <s2tbx.version>7.0.0</s2tbx.version>
         <jersey.version>2.28</jersey.version>
         <docker-java.version>3.1.5</docker-java.version>
@@ -38,13 +39,13 @@
         <repository>
             <id>snap-repo-public</id>
             <name>Public Maven Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public</url>
+            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public/</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
             </snapshots>
         </repository>
@@ -242,7 +243,29 @@
             <artifactId>snap-ndvi</artifactId>
             <version>${snap.version}</version>
         </dependency>
-        
+
+        <!--Sentinel-1 Toolbox Dependencies -->
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-io</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-commons</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-op-sar-processing</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-op-calibration</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+
         <!--Sentinel-2 Toolbox Dependencies --> 
         <dependency>
             <groupId>org.esa.s2tbx</groupId>
