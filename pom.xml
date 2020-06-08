@@ -78,7 +78,6 @@
 
        
         <!--GeoTools Dependencies -->
-
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
@@ -166,6 +165,11 @@
         <dependency>
             <groupId>org.geotools.xsd</groupId>
             <artifactId>gt-xsd-wfs</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-opengis</artifactId>
             <version>${geotools.version}</version>
         </dependency>
 
