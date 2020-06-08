@@ -243,6 +243,12 @@
             <artifactId>snap-ndvi</artifactId>
             <version>${snap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-raster</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+
 
         <!--Sentinel-1 Toolbox Dependencies -->
         <dependency>
