@@ -18,7 +18,7 @@ import org.n52.wacodis.javaps.io.data.binding.complex.ProductMetadataBinding;
 import org.n52.wacodis.javaps.io.http.SentinelFileDownloader;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadata;
 import org.n52.wacodis.javaps.preprocessing.graph.*;
-import org.n52.wacodis.javaps.utils.GeometryUtils;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- *
  * @author <a href="mailto:s.drost@52north.org">Sebastian Drost</a>
  */
 @Algorithm(
@@ -139,19 +138,25 @@ public class SealingFactorAlgorithm extends AbstractAlgorithm {
         }
     }
 
-    private File preprocessReferenceData() throws WacodisProcessingException {
+    private File preprocessMaskingData() throws WacodisProcessingException {
 
         String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
         InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_maskingdata_" + fileIdentifier + ".shp"));
 
-        InputDataOperator reprojectingOperator = new ReprojectingOperator(this.getBackendConfig().getEpsg());
+        String epsg = this.getBackendConfig().getEpsg();
+
+        Iterator<ReferenceIdentifier> refIdIter = this.sentinelProduct.getSceneCRS().getIdentifiers().iterator();
+        if (refIdIter.hasNext()) {
+            ReferenceIdentifier identifier = refIdIter.next();
+            epsg = String.format("%s:%s", identifier.getCodeSpace(), identifier.getCode());
+        }
+
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(epsg);
         List<InputDataOperator> referenceDataOperatorList = new ArrayList<>();
         referenceDataOperatorList.add(reprojectingOperator);
 
         PreprocessingExecutor referencePreprocessor = new PreprocessingExecutor(shapeWriter, referenceDataOperatorList);
-        File preprocessedReferenceData = referencePreprocessor.executeOperators(this.maskingData);
-
-        return preprocessedReferenceData;
+        return  referencePreprocessor.executeOperators(this.maskingData);
     }
 
 }
