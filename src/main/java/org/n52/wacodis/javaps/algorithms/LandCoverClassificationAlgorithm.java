@@ -81,7 +81,7 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
             title = "Optical images sources",
             abstrakt = "Sources for the optical images",
             minOccurs = 1,
-            maxOccurs = 6)
+            maxOccurs = 1)
     public void setOpticalImagesSources(List<String> value) {
         this.opticalImagesSources = value;
     }
