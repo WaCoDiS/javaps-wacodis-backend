@@ -6,7 +6,9 @@
 package org.n52.wacodis.javaps.algorithms.execution;
 
 import com.github.dockerjava.core.DefaultDockerClientConfig;
+
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.n52.wacodis.javaps.WacodisConfigurationException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
@@ -43,7 +45,7 @@ public class EoToolExecutor {
     /**
      * Excecute tool as docker container synchronously
      *
-     * @param input {@link Map<K,V>] that holds input tool argument values as {@link AbstractCommandValue}
+     * @param input  {@link Map<K,V>] that holds input tool argument values as {@link AbstractCommandValue}
      * @param config defines docker image and run command parameters
      * @return
      * @throws InterruptedException
@@ -64,8 +66,8 @@ public class EoToolExecutor {
 
         DockerContainer dockerContainer = new DockerContainer(dockerConfig.getContainer(), dockerConfig.getImage());
 
-        LOGGER.info("executing tool inside docker container " 
-                + dockerContainer.getContainerName() 
+        LOGGER.info("executing tool inside docker container "
+                + dockerContainer.getContainerName()
                 + ", image: " + dockerContainer.getImageName()
                 + ", volume bindings: " + dockerRunConfig.getVolumeBindings()
                 + ", run cmd: " + runCmdAsString(dockerRunConfig));
@@ -82,11 +84,11 @@ public class EoToolExecutor {
      * {@link AbstractCommandValue} values.
      *
      * @param cmdConfig {@link CommandConfig} that holds tool command arguments.
-     * @param input {@link Map<K,V>} that holds appropriate tool command
-     * argument {@link AbstractCommandValue} values
+     * @param input     {@link Map<K,V>} that holds appropriate tool command
+     *                  argument {@link AbstractCommandValue} values
      * @return {@link DockerRunCommandConfiguration}
      * @throws WacodisConfigurationException either if an argument type is not
-     * valid or an input value is not available.
+     *                                       valid or an input value is not available.
      */
     public DockerRunCommandConfiguration initRunConfiguration(CommandConfig cmdConfig, Map<String, AbstractCommandValue> input) throws WacodisConfigurationException {
         DockerRunCommandConfiguration runConfig = new DockerRunCommandConfiguration();
@@ -104,7 +106,12 @@ public class EoToolExecutor {
                 }
                 if (cmdArgument.getQuantity().equals(ArgumentConfig.QuantityValues.MULTIPLE.getName())) {
                     MultipleCommandValue value = (MultipleCommandValue) input.get(cmdArgument.getValue());
-                    String valueString = StringUtils.join(value.getCommandValue(), ",");
+                    String valueString = "";
+                    if (cmdArgument.getSeparator() == null) {
+                        valueString = StringUtils.join(value.getCommandValue(), ",");
+                    } else {
+                        valueString = StringUtils.join(value.getCommandValue(), cmdArgument.getSeparator());
+                    }
 
                     runConfig.addCommandParameter(new CommandParameter(cmdArgument.getName(), valueString));
                 } else {
