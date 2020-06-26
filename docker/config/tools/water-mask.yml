@@ -1,0 +1,18 @@
+id: water-mask
+docker:
+    host: unix:///var/run/docker.sock
+    image: dev.eftas.com:5000/eftas/de.eftas.wacodis.eo.water-mask:latest
+    container: wacodis-eo-watermask
+    workDir: /public
+command:
+    folder: /bin/bash
+    name: /eo.sh
+    arguments:
+        - name: -input
+          type: wps-process-reference
+          value: RADAR_IMAGE_SOURCE
+          quantity: single
+        - name: -result
+          type: wps-process-reference
+          value: RESULT_PATH
+          quantity: single
