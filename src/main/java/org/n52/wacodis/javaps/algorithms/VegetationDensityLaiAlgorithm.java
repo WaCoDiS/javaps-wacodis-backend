@@ -52,6 +52,7 @@ public class VegetationDensityLaiAlgorithm extends AbstractAlgorithm {
     private SentinelFileDownloader sentinelDownloader;
 
     private String opticalImagesSource;
+    private String areaOfInterest;
     private ProductMetadata productMetadata;
     private Product sentinelProduct;
 
@@ -63,6 +64,16 @@ public class VegetationDensityLaiAlgorithm extends AbstractAlgorithm {
             maxOccurs = 1)
     public void setOpticalImagesSources(String value) {
         this.opticalImagesSource = value;
+    }
+
+    @LiteralInput(
+            identifier = "AREA_OF_INTEREST",
+            title = "Area of interest",
+            abstrakt = "Area of interest of the optical image in GeoJSON-Format e.g. [7.1234, 52.1234, 7.9876, 52.9876]. [0,0,0,0] uses the entire area of the image.",
+            minOccurs = 0,
+            maxOccurs = 1)
+    public void setAreaOfInterest(String value) {
+        this.areaOfInterest = value;
     }
 
     @ComplexOutput(
