@@ -16,6 +16,10 @@ command:
           type: wps-process-reference
           value: RAW_OPTICAL_IMAGES_SOURCES_2
           quantity: single
+        - name: -mask
+          type: wps-process-reference
+          value: MASK_VECTOR_DATA
+          quantity: single
         - name: -output
           type: wps-process-reference
           value: RESULT_PATH
