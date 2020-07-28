@@ -75,6 +75,18 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
         this.opticalImagesSource2 = value2;
     }
 
+    @ComplexInput(
+            identifier = "MASKING_DATA",
+            title = "Masking data",
+            abstrakt = "Masking data for forest vitality change",
+            minOccurs = 1,
+            maxOccurs = 1,
+            binding = GTVectorDataBinding.class
+    )
+    public void setMaskingData(SimpleFeatureCollection value) {
+        this.maskingData = value;
+    }
+
     @ComplexOutput(
             identifier = "PRODUCT",
             binding = GeotiffFileDataBinding.class
@@ -118,6 +130,7 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
 
         inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES_1", this.createInputValue(basePath, this.preprocessOpticalImages1(), true));
         inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES_2", this.createInputValue(basePath, this.preprocessOpticalImages2(), true));
+        inputArgumentValues.put("MASK_VECTOR_DATA", this.createInputValue(basePath, this.preprocessMaskingData(), true));
         inputArgumentValues.put("RESULT_PATH", this.getResultPath(basePath));
 
         return inputArgumentValues;
@@ -151,6 +164,27 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
             LOGGER.debug("Error while reading Sentinel file: {}", this.opticalImagesSource2, ex);
             throw new WacodisProcessingException("Could not preprocess Sentinel product", ex);
         }
+    }
+
+    private File preprocessMaskingData() throws WacodisProcessingException {
+
+        String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
+        InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_maskingdata_" + fileIdentifier + ".shp"));
+
+        String epsg = this.getBackendConfig().getEpsg();
+
+        Iterator<ReferenceIdentifier> refIdIter = this.sentinelProduct.getSceneCRS().getIdentifiers().iterator();
+        if (refIdIter.hasNext()) {
+            ReferenceIdentifier identifier = refIdIter.next();
+            epsg = String.format("%s:%s", identifier.getCodeSpace(), identifier.getCode());
+        }
+
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(epsg);
+        List<InputDataOperator> referenceDataOperatorList = new ArrayList<>();
+        referenceDataOperatorList.add(reprojectingOperator);
+
+        PreprocessingExecutor referencePreprocessor = new PreprocessingExecutor(shapeWriter, referenceDataOperatorList);
+        return  referencePreprocessor.executeOperators(this.maskingData);
     }
 
 }
