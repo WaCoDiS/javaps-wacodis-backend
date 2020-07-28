@@ -7,9 +7,7 @@ package org.n52.wacodis.javaps.algorithms;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
@@ -25,6 +23,8 @@ import org.n52.wacodis.javaps.io.http.SentinelFileDownloader;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadata;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadataCreator;
 import org.n52.wacodis.javaps.io.metadata.SentinelProductMetadataCreator;
+import org.n52.wacodis.javaps.preprocessing.graph.*;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
