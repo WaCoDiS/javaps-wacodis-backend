@@ -51,6 +51,7 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
     private SentinelFileDownloader sentinelDownloader;
 
     private String opticalImagesSource1, opticalImagesSource2;
+    private SimpleFeatureCollection maskingData;
     private ProductMetadata productMetadata;
     private Product sentinelProduct1, sentinelProduct2;
 
@@ -172,7 +173,7 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
 
         String epsg = this.getBackendConfig().getEpsg();
 
-        Iterator<ReferenceIdentifier> refIdIter = this.sentinelProduct.getSceneCRS().getIdentifiers().iterator();
+        Iterator<ReferenceIdentifier> refIdIter = this.sentinelProduct1.getSceneCRS().getIdentifiers().iterator();
         if (refIdIter.hasNext()) {
             ReferenceIdentifier identifier = refIdIter.next();
             epsg = String.format("%s:%s", identifier.getCodeSpace(), identifier.getCode());
