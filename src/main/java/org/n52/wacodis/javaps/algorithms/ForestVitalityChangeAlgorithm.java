@@ -7,16 +7,13 @@ package org.n52.wacodis.javaps.algorithms;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
-import org.n52.javaps.algorithm.annotation.Algorithm;
-import org.n52.javaps.algorithm.annotation.ComplexOutput;
-import org.n52.javaps.algorithm.annotation.Execute;
-import org.n52.javaps.algorithm.annotation.LiteralInput;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.n52.javaps.algorithm.annotation.*;
+import org.n52.javaps.gt.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.javaps.io.GenericFileData;
 import org.n52.wacodis.javaps.WacodisProcessingException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
@@ -26,6 +23,8 @@ import org.n52.wacodis.javaps.io.http.SentinelFileDownloader;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadata;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadataCreator;
 import org.n52.wacodis.javaps.io.metadata.SentinelProductMetadataCreator;
+import org.n52.wacodis.javaps.preprocessing.graph.*;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +51,7 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
     private SentinelFileDownloader sentinelDownloader;
 
     private String opticalImagesSource1, opticalImagesSource2;
+    private SimpleFeatureCollection maskingData;
     private ProductMetadata productMetadata;
     private Product sentinelProduct1, sentinelProduct2;
 
@@ -73,6 +73,18 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
             maxOccurs = 1)
     public void setOpticalImagesSources2(String value2) {
         this.opticalImagesSource2 = value2;
+    }
+
+    @ComplexInput(
+            identifier = "MASKING_DATA",
+            title = "Masking data",
+            abstrakt = "Masking data for forest vitality change",
+            minOccurs = 1,
+            maxOccurs = 1,
+            binding = GTVectorDataBinding.class
+    )
+    public void setMaskingData(SimpleFeatureCollection value) {
+        this.maskingData = value;
     }
 
     @ComplexOutput(
@@ -118,6 +130,7 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
 
         inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES_1", this.createInputValue(basePath, this.preprocessOpticalImages1(), true));
         inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES_2", this.createInputValue(basePath, this.preprocessOpticalImages2(), true));
+        inputArgumentValues.put("MASK_VECTOR_DATA", this.createInputValue(basePath, this.preprocessMaskingData(), true));
         inputArgumentValues.put("RESULT_PATH", this.getResultPath(basePath));
 
         return inputArgumentValues;
@@ -151,6 +164,27 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
             LOGGER.debug("Error while reading Sentinel file: {}", this.opticalImagesSource2, ex);
             throw new WacodisProcessingException("Could not preprocess Sentinel product", ex);
         }
+    }
+
+    private File preprocessMaskingData() throws WacodisProcessingException {
+
+        String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
+        InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_maskingdata_" + fileIdentifier + ".shp"));
+
+        String epsg = this.getBackendConfig().getEpsg();
+
+        Iterator<ReferenceIdentifier> refIdIter = this.sentinelProduct1.getSceneCRS().getIdentifiers().iterator();
+        if (refIdIter.hasNext()) {
+            ReferenceIdentifier identifier = refIdIter.next();
+            epsg = String.format("%s:%s", identifier.getCodeSpace(), identifier.getCode());
+        }
+
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(epsg);
+        List<InputDataOperator> referenceDataOperatorList = new ArrayList<>();
+        referenceDataOperatorList.add(reprojectingOperator);
+
+        PreprocessingExecutor referencePreprocessor = new PreprocessingExecutor(shapeWriter, referenceDataOperatorList);
+        return  referencePreprocessor.executeOperators(this.maskingData);
     }
 
 }
