@@ -262,6 +262,11 @@
             <artifactId>snap-bigtiff</artifactId>
             <version>${snap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>lib-openjpeg</artifactId> 
+            <version>${snap.version}</version>
+        </dependency>
 
 
         <!--Sentinel-1 Toolbox Dependencies -->
@@ -297,11 +302,6 @@
             <artifactId>s2tbx-s2msi-reader</artifactId>
             <version>${s2tbx.version}</version>   
         </dependency>  
-        <dependency>
-            <groupId>org.esa.s2tbx</groupId>
-            <artifactId>lib-openjpeg</artifactId> 
-            <version>${s2tbx.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.esa.s2tbx</groupId>
             <artifactId>s2tbx-s2msi-resampler</artifactId> 
