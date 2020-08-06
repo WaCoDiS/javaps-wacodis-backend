@@ -41,7 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         statusSupported = true)
 public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
 
-    private static final String TIFF_EXTENSION = ".tif";
+    private static final String PROCESS_ID = "de.hsbo.wacodis.forest_vitality_change";
     private static final String RESULTNAMEPREFIX = "forest-vitality-change_result";
     private static final String TOOL_CONFIG = "forest-vitality-change.yml";
 
@@ -107,6 +107,11 @@ public class ForestVitalityChangeAlgorithm extends AbstractAlgorithm {
     public void execute() throws WacodisProcessingException {
         this.executeProcess();
         this.productMetadata = this.createProductMetadata(Arrays.asList(this.sentinelProduct1, this.sentinelProduct2));
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

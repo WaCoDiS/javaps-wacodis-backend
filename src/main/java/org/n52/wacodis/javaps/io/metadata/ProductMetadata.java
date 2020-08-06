@@ -12,10 +12,19 @@ import java.time.LocalDateTime;
  */
 public class ProductMetadata {
 
+    private String process;
     private TimeFrame timeFrame;
     private String sourceType;
     private AreaOfInterest areaOfInterest;
     private LocalDateTime created;
+
+    public String getProcess() {
+        return process;
+    }
+
+    public void setProcess(String process) {
+        this.process = process;
+    }
 
     public TimeFrame getTimeFrame() {
         return timeFrame;

@@ -201,13 +201,13 @@ public abstract class AbstractAlgorithm {
         ProductMetadata productMetadata = null;
         try {
             Product resultProduct = ProductIO.readProduct(this.getResultFile());
-            productMetadata = metadataCreator.createProductMetadata(resultProduct, sourceProducts);
+            productMetadata = metadataCreator.createProductMetadata(getProcessId(), resultProduct, sourceProducts);
         } catch (IOException ex) {
             LOGGER.error("Product metadata creation for result product failed: {}", ex.getMessage());
             LOGGER.debug("Could not read result as SNAP Product.", ex);
         } finally {
             if (productMetadata == null) {
-                productMetadata = metadataCreator.createProductMetadata(sourceProducts);
+                productMetadata = metadataCreator.createProductMetadata(getProcessId(), sourceProducts);
             }
         }
         return productMetadata;
@@ -236,5 +236,7 @@ public abstract class AbstractAlgorithm {
     public abstract String getResultNamePrefix();
 
     public abstract Map<String, AbstractCommandValue> createInputArgumentValues(String basePath) throws WacodisProcessingException;
+
+    public abstract String getProcessId();
 
 }

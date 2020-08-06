@@ -48,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Sentinel2ImageToGeoTiffAlgorithm {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Sentinel2ImageToGeoTiffAlgorithm.class);
+    private static final String PROCESS_ID = "de.hsbo.wacodis.snap.s2togeotiff";
 
     @Autowired
     private WacodisBackendConfig config;
@@ -87,7 +88,7 @@ public class Sentinel2ImageToGeoTiffAlgorithm {
 
             ProductMetadataCreator metadataCreator = new SentinelProductMetadataCreator();
             LOGGER.info("Creating metadata for Sentinel product");
-            this.metadata = metadataCreator.createProductMetadata(ProductIO.readProduct(output.getPath()), Collections.singletonList(sentinelProduct));
+            this.metadata = metadataCreator.createProductMetadata(PROCESS_ID, ProductIO.readProduct(output.getPath()), Collections.singletonList(sentinelProduct));
         } catch (WacodisProcessingException ex) {
             LOGGER.error(ex.getMessage());
             LOGGER.debug("Error while creating output", ex);

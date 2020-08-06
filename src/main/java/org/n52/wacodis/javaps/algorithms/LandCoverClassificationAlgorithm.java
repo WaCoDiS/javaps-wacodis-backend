@@ -58,8 +58,9 @@ import org.springframework.beans.factory.annotation.Autowired;
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
-public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
+public class LandCoverClassificationAlgorithm extends AbstractDummyAlgorithm {
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.land_cover_classification";
     private static final String TIFF_EXTENSION = ".tif";
     private static final String RESULTNAMEPREFIX = "land_cover_classification_result";
     private static final String TOOL_CONFIG = "land-cover-classification.yml";
@@ -128,6 +129,11 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
     public void execute() throws WacodisProcessingException {
         this.executeProcess();
         this.productMetadata = this.createProductMetadata(this.sentinelProductList);
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

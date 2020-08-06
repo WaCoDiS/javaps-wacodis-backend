@@ -64,7 +64,7 @@ public abstract class AbstractSnapAlgorithm {
         LOGGER.info("Succesfully wrote result product as GeoTIFF file: {}.", this.resultPath);
 
         ProductMetadataCreator metadataCreator = new SentinelProductMetadataCreator();
-        this.productMetadata = metadataCreator.createProductMetadata(result, Collections.singletonList(sentinelProduct));
+        this.productMetadata = metadataCreator.createProductMetadata(getProcessId(), result, Collections.singletonList(sentinelProduct));
     }
 
     /**
@@ -175,6 +175,8 @@ public abstract class AbstractSnapAlgorithm {
     public void setConfig(WacodisBackendConfig config) {
         this.config = config;
     }
+
+    public abstract String getProcessId();
 
     public abstract String getResultNamePrefix();
 

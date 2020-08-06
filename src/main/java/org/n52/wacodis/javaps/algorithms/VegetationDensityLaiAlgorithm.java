@@ -40,9 +40,9 @@ import org.springframework.beans.factory.annotation.Autowired;
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
-public class VegetationDensityLaiAlgorithm extends AbstractAlgorithm {
+public class VegetationDensityLaiAlgorithm extends AbstractDummyAlgorithm {
 
-    private static final String TIFF_EXTENSION = ".tif";
+    private static final String PROCESS_ID = "de.hsbo.wacodis.vegetation_density_lai";
     private static final String RESULTNAMEPREFIX = "vegetation-density-lai_result";
     private static final String TOOL_CONFIG = "vegetation-density-lai.yml";
 
@@ -85,6 +85,11 @@ public class VegetationDensityLaiAlgorithm extends AbstractAlgorithm {
     public void execute() throws WacodisProcessingException {
         this.executeProcess();
         this.productMetadata = this.createProductMetadata(Collections.singletonList(this.sentinelProduct));
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         statusSupported = true)
 public class VegetationDensityNdviAlgorithm extends AbstractAlgorithm {
 
-    private static final String TIFF_EXTENSION = ".tif";
+    private static final String PROCESS_ID = "de.hsbo.wacodis.vegetation_density_ndvi";
     private static final String RESULTNAMEPREFIX = "vegetation-density-ndvi_result";
     private static final String TOOL_CONFIG = "vegetation-density-ndvi.yml";
 
@@ -85,6 +85,11 @@ public class VegetationDensityNdviAlgorithm extends AbstractAlgorithm {
     public void execute() throws WacodisProcessingException {
         this.executeProcess();
         this.productMetadata = this.createProductMetadata(Collections.singletonList(this.sentinelProduct));
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

@@ -30,6 +30,7 @@ import org.n52.wacodis.javaps.io.metadata.ProductMetadata;
         statusSupported = true)
 public class NdviSnapAlgorithm extends AbstractSnapAlgorithm {
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.snap.ndvi";
     private static final String NDVI_OPERATOR_NAME = "NdviOp";
     private static final String RESULT_NAME_PREFIX = "snap_ndvi_result";
 
@@ -62,6 +63,10 @@ public class NdviSnapAlgorithm extends AbstractSnapAlgorithm {
     @Execute
     public void callExecute() throws WacodisProcessingException {
         this.execute();
+    }
+
+    public String getProcessId() {
+        return PROCESS_ID;
     }
 
     public String getResultNamePrefix() {

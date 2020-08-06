@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface ProductMetadataCreator<T> {
 
-    public ProductMetadata createProductMetadata(T product);
+    public ProductMetadata createProductMetadata(String processID, T product);
     
-    public ProductMetadata createProductMetadata(List<T> productList);
+    public ProductMetadata createProductMetadata(String processId, List<T> productList);
 
-    public ProductMetadata createProductMetadata(T resultProduct, List<T> sourceProducts);
+    public ProductMetadata createProductMetadata(String processId, T resultProduct, List<T> sourceProducts);
 }

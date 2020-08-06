@@ -29,11 +29,12 @@ import org.n52.wacodis.javaps.io.metadata.ProductMetadata;
         storeSupported = true,
         statusSupported = true)
 public class Ndwi2SnapAlgorithm extends AbstractSnapAlgorithm{
-    
+
+    private static final String PROCESS_ID = "de.hsbo.wacodis.snap.ndwi2";
     private static final String NDWI2_OPERATOR_NAME = "Ndwi2Op";
     private static final String RESULT_NAME_PREFIX = "snap_ndwi2_result";
 
-        @LiteralInput(
+    @LiteralInput(
             identifier = "SENTINEL_2_IMAGE_SOURCE",
             title = "Sentinel-2 image source",
             abstrakt = "Sources for the Sentinel-2 scene",
@@ -62,6 +63,10 @@ public class Ndwi2SnapAlgorithm extends AbstractSnapAlgorithm{
     @Execute
     public void callExecute() throws WacodisProcessingException {
         this.execute();
+    }
+
+    public String getProcessId() {
+        return PROCESS_ID;
     }
     
     public String getResultNamePrefix() {

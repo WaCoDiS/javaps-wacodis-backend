@@ -44,11 +44,13 @@ import java.util.Map;
         statusSupported = true)
 public class GdalWarpAlgorithm extends AbstractAlgorithm {
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.gdal_warp";
     private static final String GPF_FILE = "S2_GeoTIFF_Composition.xml";
     private static final String RESULTNAMEPREFIX = "gdal_reprojection_result";
     private static final String TIFF_EXTENSION = ".tif";
 
     private static final Logger LOG = LoggerFactory.getLogger(GdalWarpAlgorithm.class);
+
 
     private String opticalImagesSource;
     private Product sentinelProduct;
@@ -105,13 +107,13 @@ public class GdalWarpAlgorithm extends AbstractAlgorithm {
         ProductMetadataCreator<Product> metadataCreator = new SentinelProductMetadataCreator();
         try {
             Product resultProduct = ProductIO.readProduct(resultFile);
-            productMetadata = metadataCreator.createProductMetadata(resultProduct, Collections.singletonList(sentinelProduct));
+            productMetadata = metadataCreator.createProductMetadata(PROCESS_ID, resultProduct, Collections.singletonList(sentinelProduct));
         } catch (IOException ex) {
             LOG.error("Product metadata creation for result product failed: {}", ex.getMessage());
             LOG.debug("Could not read result as SNAP Product.", ex);
         }
         if (productMetadata == null) {
-            productMetadata = metadataCreator.createProductMetadata(Collections.singletonList(sentinelProduct));
+            productMetadata = metadataCreator.createProductMetadata(PROCESS_ID, Collections.singletonList(sentinelProduct));
         }
     }
 
@@ -138,6 +140,11 @@ public class GdalWarpAlgorithm extends AbstractAlgorithm {
             LOG.debug("Error while reading Sentinel file: {}", this.opticalImagesSource, ex);
             throw new WacodisProcessingException("Could not preprocess Sentinel product", ex);
         }
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

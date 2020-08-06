@@ -35,6 +35,8 @@ import org.springframework.web.client.RestTemplate;
         statusSupported = true)
 public class SentinelImageDownloadAlgorithm {
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.sentinel_download_process";
+
     private String referenceData;
     private String product;
 

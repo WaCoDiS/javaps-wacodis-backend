@@ -39,6 +39,7 @@ import java.util.*;
         statusSupported = true)
 public class SealingFactorAlgorithm extends AbstractAlgorithm {
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.sealing_factor";
     private static final String RESULTNAMEPREFIX = "sealing_factor_result";
     private static final String TOOL_CONFIG = "sealing-factor.yml";
     private static final String GPF_FILE = "S2_GeoTIFF_Composition.xml";
@@ -95,6 +96,11 @@ public class SealingFactorAlgorithm extends AbstractAlgorithm {
     public void execute() throws WacodisProcessingException {
         this.executeProcess();
         this.productMetadata = this.createProductMetadata(Collections.singletonList(this.sentinelProduct));
+    }
+
+    @Override
+    public String getProcessId(){
+        return PROCESS_ID;
     }
 
     @Override

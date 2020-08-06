@@ -22,8 +22,9 @@ public class SentinelProductMetadataCreator implements ProductMetadataCreator<Pr
     private static final String DATA_ENVELOPE_TYPE = "WacodisProductDataEnvelope";
 
     @Override
-    public ProductMetadata createProductMetadata(Product product) {
+    public ProductMetadata createProductMetadata(String processId, Product product) {
         ProductMetadata metadata = new ProductMetadata();
+        metadata.setProcess(processId);
         metadata.setSourceType(DATA_ENVELOPE_TYPE);
         metadata.setTimeFrame(createTimeFrame(product));
         metadata.setAreaOfInterest(createAreaOfInterest(product));
@@ -32,8 +33,9 @@ public class SentinelProductMetadataCreator implements ProductMetadataCreator<Pr
     }
 
     @Override
-    public ProductMetadata createProductMetadata(List<Product> productList) {
+    public ProductMetadata createProductMetadata(String processId, List<Product> productList) {
         ProductMetadata metadata = new ProductMetadata();
+        metadata.setProcess(processId);
         metadata.setSourceType("CopernicusDataEnvelope");
         metadata.setTimeFrame(createTimeFrame(productList));
         metadata.setAreaOfInterest(createAreaOfInterest(productList));
@@ -42,13 +44,11 @@ public class SentinelProductMetadataCreator implements ProductMetadataCreator<Pr
     }
 
     @Override
-    public ProductMetadata createProductMetadata(Product resultProduct, List<Product> sourceProducts) {
-        ProductMetadata metadata = createProductMetadata(resultProduct);
+    public ProductMetadata createProductMetadata(String processId, Product resultProduct, List<Product> sourceProducts) {
+        ProductMetadata metadata = createProductMetadata(processId, resultProduct);
+        metadata.setTimeFrame(createTimeFrame(sourceProducts));
         if (metadata.getAreaOfInterest() == null) {
             metadata.setAreaOfInterest(createAreaOfInterest(sourceProducts));
-        }
-        if (metadata.getTimeFrame() == null) {
-            metadata.setTimeFrame(createTimeFrame(sourceProducts));
         }
         return metadata;
     }
