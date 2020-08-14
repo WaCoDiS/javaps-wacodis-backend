@@ -24,14 +24,16 @@ RUN mvn -f ./javaps/pom.xml clean install -DskipTests -pl !webapp
 #RUN mvn -f ./snap-engine/pom.xml clean install -DskipTests -pl snap-runtime,snap-core,snap-geotiff,snap-ndvi,snap-raster,snap-bigtiff,lib-openjpeg
 
 #sentinel 1 toolbox
-#RUN git clone https://github.com/senbox-org/s1tbx.git s1tbx \
-#	&& git -C ./s1tbx  checkout master
-#RUN mvn -f ./s1tbx/pom.xml clean install -DskipTests -pl s1tbx-io,s1tbx-commons,s1tbx-op-sar-processing,s1tbx-op-utilities,s1tbx-op-calibration
+RUN git clone https://github.com/senbox-org/s1tbx.git s1tbx \
+	&& git -C ./s1tbx  checkout master
+RUN mvn -f ./s1tbx/pom.xml clean install -DskipTests 
+# -pl s1tbx-io,s1tbx-commons,s1tbx-op-sar-processing,s1tbx-op-utilities,s1tbx-op-calibration
 
 #sentinel 2 toolbox
-#RUN git clone https://github.com/senbox-org/s2tbx.git s2tbx \
-# 	&& git -C ./s2tbx  checkout master
-#RUN mvn -f ./s2tbx/pom.xml clean install -DskipTests -pl s2tbx-s2msi-reader,s2tbx-s2msi-resampler,s2tbx-radiometric-indices
+RUN git clone https://github.com/senbox-org/s2tbx.git s2tbx \
+ 	&& git -C ./s2tbx  checkout master
+RUN mvn -f ./s2tbx/pom.xml clean install -DskipTests
+# -pl s2tbx-s2msi-reader,s2tbx-s2msi-resampler,s2tbx-radiometric-indices
 
 
 COPY ./pom.xml ./wacodis-backend/pom.xml
