@@ -53,7 +53,7 @@ public abstract class AbstractSnapAlgorithm {
 
     public void execute() throws WacodisProcessingException {
 
-        Product sentinelProduct = this.fetchInput(this.sentinel2ImageSource);
+        Product sentinelProduct = this.fetchInputInternal(this.sentinel2ImageSource);
         LOGGER.info("Succesfully downloaded Sentinel-2 scene: {}", sentinelProduct.getName());
         
         Map<String, Object> parameters = this.prepareOperationParameters();
@@ -81,6 +81,28 @@ public abstract class AbstractSnapAlgorithm {
             File sentinelFile = sentinelDownloader.downloadSentinelFile(
                     this.sentinel2ImageSource,
                     this.config.getWorkingDirectory());
+
+            sentinelProduct = ProductIO.readProduct(sentinelFile.getPath());
+        } catch (IOException ex) {
+            String message = "Error while reading input data";
+            LOGGER.debug(message, ex);
+            throw new WacodisProcessingException(message, ex);
+        }
+        return sentinelProduct;
+    }
+
+    /**
+     * Fetches a Sentinel-2 scene for the specified URL from the Copernicus Open
+     * Access Hub
+     *
+     * @param imageUrl the URL for the Sentinel-2 scene
+     * @return the {@link Product} that represents the Sentinel-2 scene
+     * @throws WacodisProcessingException
+     */
+    protected Product fetchInputInternal(String imageUrl) throws WacodisProcessingException {
+        Product sentinelProduct;
+        try {
+            File sentinelFile = new File(imageUrl);
 
             sentinelProduct = ProductIO.readProduct(sentinelFile.getPath());
         } catch (IOException ex) {
