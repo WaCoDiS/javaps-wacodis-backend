@@ -25,14 +25,19 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-4.1.xsd">
 
-    <bean id="landCoverClassificationAlgorithm" class="org.n52.wacodis.javaps.algorithms.LandCoverClassificationAlgorithm" />
-    <bean id="sentinelProcess" class="org.n52.wacodis.javaps.algorithms.SentinelImageDownloadAlgorithm" />
-    <bean id="sentinelGeotiffProcess" class="org.n52.wacodis.javaps.algorithms.Sentinel2ImageToGeoTiffAlgorithm" />
-    <bean id="vegetationDensityLaiProcess" class="org.n52.wacodis.javaps.algorithms.VegetationDensityLaiAlgorithm" />
-    <bean id="vegetationDensityNdviProcess" class="org.n52.wacodis.javaps.algorithms.VegetationDensityNdviAlgorithm" />
-    <bean id="forestVitalityChangeProcess" class="org.n52.wacodis.javaps.algorithms.ForestVitalityChangeAlgorithm" />
-    <bean id="sealingFactorProcess" class="org.n52.wacodis.javaps.algorithms.SealingFactorAlgorithm" />
-    <bean id="gdalWarpProcess" class="org.n52.wacodis.javaps.algorithms.GdalWarpAlgorithm" />
+<!--    <bean id="landCoverClassificationAlgorithm" class="org.n52.wacodis.javaps.algorithms.LandCoverClassificationAlgorithm" />-->
+<!--    <bean id="sentinelProcess" class="org.n52.wacodis.javaps.algorithms.SentinelImageDownloadAlgorithm" />-->
+<!--    <bean id="sentinelGeotiffProcess" class="org.n52.wacodis.javaps.algorithms.Sentinel2ImageToGeoTiffAlgorithm" />-->
+<!--    <bean id="vegetationDensityLaiProcess" class="org.n52.wacodis.javaps.algorithms.VegetationDensityLaiAlgorithm" />-->
+<!--    <bean id="vegetationDensityNdviProcess" class="org.n52.wacodis.javaps.algorithms.VegetationDensityNdviAlgorithm" />-->
+<!--    <bean id="forestVitalityChangeProcess" class="org.n52.wacodis.javaps.algorithms.ForestVitalityChangeAlgorithm" />-->
+<!--    <bean id="sealingFactorProcess" class="org.n52.wacodis.javaps.algorithms.SealingFactorAlgorithm" />-->
+<!--    <bean id="gdalWarpProcess" class="org.n52.wacodis.javaps.algorithms.GdalWarpAlgorithm" />-->
+
+    <!--Out-of-the-box SNAP processors -->
+    <bean id="snapNdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.NdviSnapAlgorithm"/>
+    <bean id="snapNdwi2Process" class="org.n52.wacodis.javaps.algorithms.snap.Ndwi2SnapAlgorithm"/>
+    <bean id="snapWdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.WdviSnapAlgorithm"/>
 
     <bean id="openAccessHubConfig" class="org.n52.wacodis.javaps.configuration.OpenAccessHubConfig" />
     <bean id="wacodisBackendConfig" class="org.n52.wacodis.javaps.configuration.WacodisBackendConfig" />
@@ -40,9 +45,6 @@
     <bean id="sentinel2Preprocesor" class="org.n52.wacodis.javaps.preprocessing.Sentinel2Preprocessor" />
     <bean id="toolConfigParser" class="org.n52.wacodis.javaps.configuration.tools.ToolConfigParser" />
     <bean id="eoToolExecutor" class="org.n52.wacodis.javaps.algorithms.execution.EoToolExecutor" />
-    <bean id="snapNdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.NdviSnapAlgorithm"/>
-    <bean id="snapNdwi2Process" class="org.n52.wacodis.javaps.algorithms.snap.Ndwi2SnapAlgorithm"/>
-    <bean id="snapWdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.WdviSnapAlgorithm"/>
 
     <bean id="gml3Parser" class="org.n52.wacodis.javaps.io.datahandler.parser.Gml3Parser" />
     <bean id="productMetadataGenerator" class="org.n52.wacodis.javaps.io.datahandler.generator.ProductMetadataJsonGenerator" />

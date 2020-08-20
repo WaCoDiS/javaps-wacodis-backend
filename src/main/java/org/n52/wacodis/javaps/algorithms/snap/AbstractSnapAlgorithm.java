@@ -48,8 +48,6 @@ public abstract class AbstractSnapAlgorithm {
 
     @Autowired
     private WacodisBackendConfig config;
-    
-       
 
     public void execute() throws WacodisProcessingException {
 
@@ -60,6 +58,7 @@ public abstract class AbstractSnapAlgorithm {
         Product result = GPF.createProduct(this.getOperatorName(), parameters, sentinelProduct);
         LOGGER.info("Succesfully finished operation: ", this.getOperatorName());
 
+        LOGGER.info("Start writing result product as GeoTIFF file.");
         this.resultPath = this.writeResultProduct(result);
         LOGGER.info("Succesfully wrote result product as GeoTIFF file: {}.", this.resultPath);
 
