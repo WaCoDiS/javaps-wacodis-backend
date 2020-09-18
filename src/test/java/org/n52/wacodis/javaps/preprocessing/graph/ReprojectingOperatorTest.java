@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.preprocessing.graph.featurecollection.ReprojectingOperator;
 import org.opengis.referencing.FactoryException;
 /**
  *
