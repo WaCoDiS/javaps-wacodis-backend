@@ -26,6 +26,7 @@
                            http://www.springframework.org/schema/util/spring-util-4.1.xsd">
 
     <bean id="landCoverClassificationAlgorithm" class="org.n52.wacodis.javaps.algorithms.LandCoverClassificationAlgorithm" />
+    <bean id="detailedLandCoverClassificationAlgorithm" class="org.n52.wacodis.javaps.algorithms.DetailedLandCoverClassificationAlgorithm" />
     <bean id="sentinelProcess" class="org.n52.wacodis.javaps.algorithms.SentinelImageDownloadAlgorithm" />
     <bean id="sentinelGeotiffProcess" class="org.n52.wacodis.javaps.algorithms.Sentinel2ImageToGeoTiffAlgorithm" />
     <bean id="vegetationDensityLaiProcess" class="org.n52.wacodis.javaps.algorithms.VegetationDensityLaiAlgorithm" />
