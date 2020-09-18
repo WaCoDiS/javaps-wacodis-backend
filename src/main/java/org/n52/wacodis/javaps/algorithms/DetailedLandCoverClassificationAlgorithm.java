@@ -47,7 +47,7 @@ import java.util.*;
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
-public class DetailedLandCoverClassificationAlgorithm extends AbstractDummyAlgorithm {
+public class DetailedLandCoverClassificationAlgorithm extends AbstractAlgorithm {
 
     private static final String PROCESS_ID = "de.hsbo.wacodis.detailed_land_cover_classification";
     private static final String TIFF_EXTENSION = ".tif";

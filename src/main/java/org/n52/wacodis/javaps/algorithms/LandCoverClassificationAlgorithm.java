@@ -54,7 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
-public class LandCoverClassificationAlgorithm extends AbstractDummyAlgorithm {
+public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
 
     private static final String PROCESS_ID = "de.hsbo.wacodis.land_cover_classification";
     private static final String TIFF_EXTENSION = ".tif";
