@@ -1,4 +1,4 @@
-FROM maven:3.5-jdk-8-alpine as build 
+FROM wacodis/snap_prebuilt:8.0.0-SNAPSHOT-maven-3.5-jdk-8-alpine as build 
 
 RUN apk add --no-cache git
 
@@ -15,26 +15,6 @@ RUN git clone https://github.com/WaCoDiS/javaPS.git javaps \
  	&& git -C ./javaps checkout wacodis-developments
 
 RUN mvn -f ./javaps/pom.xml clean install -DskipTests -pl !webapp
-
-#clone and build snap dependencies 
-# (optional, if artifacts are not available in the snap repository, it might be necessary to build complete projects instead of selected modules)
-#snap core
-#RUN git clone https://github.com/senbox-org/snap-engine.git snap-engine \
-# 	&& git -C ./snap-engine  checkout master
-#RUN mvn -f ./snap-engine/pom.xml clean install -DskipTests -pl snap-runtime,snap-core,snap-geotiff,snap-ndvi,snap-raster,snap-bigtiff,lib-openjpeg
-
-#sentinel 1 toolbox
-RUN git clone https://github.com/senbox-org/s1tbx.git s1tbx \
-	&& git -C ./s1tbx  checkout master
-RUN mvn -f ./s1tbx/pom.xml clean install -DskipTests 
-# -pl s1tbx-io,s1tbx-commons,s1tbx-op-sar-processing,s1tbx-op-utilities,s1tbx-op-calibration
-
-#sentinel 2 toolbox
-RUN git clone https://github.com/senbox-org/s2tbx.git s2tbx \
- 	&& git -C ./s2tbx  checkout master
-RUN mvn -f ./s2tbx/pom.xml clean install -DskipTests
-# -pl s2tbx-s2msi-reader,s2tbx-s2msi-resampler,s2tbx-radiometric-indices
-
 
 COPY ./pom.xml ./wacodis-backend/pom.xml
 # Cache dependencies as long as the POM changes
