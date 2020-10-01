@@ -259,7 +259,7 @@ public class DetailedLandCoverClassificationAlgorithm extends AbstractAlgorithm 
         InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_water_" + fileIdentifier + ".shp"));
 
         InputDataOperator reprojectingOperator = new ReprojectingOperator(this.getBackendConfig().getEpsg());
-        List<InputDataOperator> referenceDataOperatorList = new ArrayList<>();
+        List<InputDataOperator> waterDataOperatorList = new ArrayList<>();
         waterDataOperatorList.add(reprojectingOperator);
 
         PreprocessingExecutor waterPreprocessor = new PreprocessingExecutor(shapeWriter, waterDataOperatorList);
