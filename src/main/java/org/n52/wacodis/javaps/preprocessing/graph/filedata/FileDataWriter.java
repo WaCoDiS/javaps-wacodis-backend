@@ -29,7 +29,7 @@ public class FileDataWriter extends InputDataWriter<GenericFileData> {
         String fileName = input.writeData(this.getTargetFile());
         if (fileName != null) {
             LOG.info("Writing file {} was successfull.", fileName);
-            return this.getTargetFile();
+            return new File(fileName);
         } else {
             throw new WacodisProcessingException("Error while writing file.");
         }
