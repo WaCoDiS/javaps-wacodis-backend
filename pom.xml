@@ -12,8 +12,9 @@
         <javaps.version>1.4.0</javaps.version>
         <iohandler.version>1.4.0</iohandler.version>
         <geotools.version>20.2</geotools.version>
-        <snap.version>7.0.3</snap.version>
-        <s2tbx.version>7.0.0</s2tbx.version>
+        <snap.version>8.0.0</snap.version>
+        <s1tbx.version>8.0.0</s1tbx.version>
+        <s2tbx.version>8.0.0</s2tbx.version>
         <jersey.version>2.28</jersey.version>
         <docker-java.version>3.1.5</docker-java.version>
         <jax-rs.version>2.1.1</jax-rs.version>
@@ -32,25 +33,35 @@
             <id>osgeo</id>
             <name>OSGeo Release Repository</name>
             <url>https://repo.osgeo.org/repository/release/</url>
-            <snapshots><enabled>false</enabled></snapshots>
-            <releases><enabled>true</enabled></releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
         <repository>
             <id>snap-repo-public</id>
             <name>Public Maven Repository for SNAP</name>
-            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public</url>
+            <url>https://snap-build-server.tilaa.cloud/nexus/repository/snap-maven-public/</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>
             </snapshots>
         </repository>
     </repositories>
     
     <dependencies>   
+        <dependency>
+            <groupId>javax.measure</groupId>
+            <artifactId>jsr-275</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.n52.wps</groupId>
             <artifactId>engine</artifactId>
@@ -77,7 +88,6 @@
 
        
         <!--GeoTools Dependencies -->
-
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
@@ -242,18 +252,56 @@
             <artifactId>snap-ndvi</artifactId>
             <version>${snap.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-raster</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>snap-bigtiff</artifactId>
+            <version>${snap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.snap</groupId>
+            <artifactId>lib-openjpeg</artifactId> 
+            <version>${snap.version}</version>
+        </dependency>
+
+
+        <!--Sentinel-1 Toolbox Dependencies -->
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-io</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-commons</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-op-sar-processing</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-op-calibration</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.esa.s1tbx</groupId>
+            <artifactId>s1tbx-op-utilities</artifactId>
+            <version>${s1tbx.version}</version>
+        </dependency>
+
         <!--Sentinel-2 Toolbox Dependencies --> 
         <dependency>
             <groupId>org.esa.s2tbx</groupId>
             <artifactId>s2tbx-s2msi-reader</artifactId>
             <version>${s2tbx.version}</version>   
         </dependency>  
-        <dependency>
-            <groupId>org.esa.s2tbx</groupId>
-            <artifactId>lib-openjpeg</artifactId> 
-            <version>${s2tbx.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.esa.s2tbx</groupId>
             <artifactId>s2tbx-s2msi-resampler</artifactId> 
@@ -265,11 +313,7 @@
             <version>${s2tbx.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>org.esa.s1tbx</groupId>
-            <artifactId>s1tbx-op-utilities</artifactId>
-            <version>${s2tbx.version}</version>
-        </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
