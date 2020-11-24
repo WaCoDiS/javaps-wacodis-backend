@@ -41,6 +41,7 @@ public class WaterMaskAlgorithm extends AbstractAlgorithm {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WaterMaskAlgorithm.class);
 
+    private static final String PROCESS_ID = "de.hsbo.wacodis.water_mask";
     private static final String TIFF_EXTENSION = ".tif";
     private static final String RESULTNAMEPREFIX = "water-mask_result";
     private static final String TOOL_CONFIG = "water-mask.yml";
@@ -101,6 +102,11 @@ public class WaterMaskAlgorithm extends AbstractAlgorithm {
     }
 
     @Override
+    public String getProcessId() {
+        return PROCESS_ID;
+    }
+
+    @Override
     public Map<String, AbstractCommandValue> createInputArgumentValues(String basePath) throws WacodisProcessingException {
         Map<String, AbstractCommandValue> inputArgumentValues = new HashMap();
 
@@ -115,7 +121,6 @@ public class WaterMaskAlgorithm extends AbstractAlgorithm {
 
         //TODO set parameters for GPT processing
         //TODO consider CRS param (see below)
-
         InputDataPreprocessor imagePreprocessor = new GptPreprocessor(FilenameUtils.concat(
                 this.getBackendConfig().getGpfDir(), GPF_FILE),
                 parameters,
@@ -129,7 +134,6 @@ public class WaterMaskAlgorithm extends AbstractAlgorithm {
             this.sentinelProduct = ProductIO.readProduct(sentinelFile.getPath());
 
             //TODO determine CRS from Sentinel as GPT preprocessing param
-
             List<File> preprocessedImages = imagePreprocessor.preprocess(sentinelProduct, this.getBackendConfig().getWorkingDirectory());
             if (preprocessedImages == null && preprocessedImages.isEmpty()) {
                 throw new WacodisProcessingException("No preprocessed Sentinel files available.");
