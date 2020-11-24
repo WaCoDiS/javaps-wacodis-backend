@@ -1,4 +1,4 @@
-FROM wacodis/snap_prebuilt:8.0.0-SNAPSHOT-maven-3.5-jdk-8-alpine as build 
+FROM maven:3.5-jdk-8-alpine as build 
 
 RUN apk add --no-cache git
 
@@ -11,7 +11,7 @@ ARG CACHE_DATE=not_a_date
 # for the moment we still use the wacodis fork, but only until the PR
 # is merged (https://github.com/52North/javaPS/pull/52)
 # then --> 52North/javaps:develop branch should be
-RUN git clone https://github.com/WaCoDiS/javaPS.git javaps \
+RUN git clone https://github.com/wacodis/javaPS.git javaps \
  	&& git -C ./javaps checkout wacodis-developments
 
 RUN mvn -f ./javaps/pom.xml clean install -DskipTests -pl !webapp

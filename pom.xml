@@ -12,9 +12,9 @@
         <javaps.version>1.4.0</javaps.version>
         <iohandler.version>1.4.0</iohandler.version>
         <geotools.version>20.2</geotools.version>
-        <snap.version>8.0.0-SNAPSHOT</snap.version>
-        <s1tbx.version>8.0.0-SNAPSHOT</s1tbx.version>
-        <s2tbx.version>8.0.0-SNAPSHOT</s2tbx.version>
+        <snap.version>8.0.0</snap.version>
+        <s1tbx.version>8.0.0</s1tbx.version>
+        <s2tbx.version>8.0.0</s2tbx.version>
         <jersey.version>2.28</jersey.version>
         <docker-java.version>3.1.5</docker-java.version>
         <jax-rs.version>2.1.1</jax-rs.version>
