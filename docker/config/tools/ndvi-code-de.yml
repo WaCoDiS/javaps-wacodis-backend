@@ -1,0 +1,18 @@
+id: ndvi-code-de
+docker:
+    host: unix:///var/run/docker.sock
+    image: wacodis/s2_ndvi:latest
+    container: wacodis-ndvi
+    workDir: /input
+command:
+    folder:
+    name: ./ndvi.sh
+    arguments:
+        - name: --archive_path
+          type: wps-process-reference
+          value: RAW_OPTICAL_IMAGES_SOURCES
+          quantity: single
+#        - name: -output
+#          type: wps-process-reference
+#          value: RESULT_PATH
+#          quantity: single
