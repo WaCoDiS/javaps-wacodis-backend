@@ -38,6 +38,7 @@
     <bean id="snapNdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.NdviSnapAlgorithm"/>
     <bean id="snapNdwi2Process" class="org.n52.wacodis.javaps.algorithms.snap.Ndwi2SnapAlgorithm"/>
     <bean id="snapWdviProcess" class="org.n52.wacodis.javaps.algorithms.snap.WdviSnapAlgorithm"/>
+    <bean id="ndviProcess" class="org.n52.wacodis.javaps.algorithms.NdviDemoAlgorithm"/>
 
     <bean id="openAccessHubConfig" class="org.n52.wacodis.javaps.configuration.OpenAccessHubConfig" />
     <bean id="wacodisBackendConfig" class="org.n52.wacodis.javaps.configuration.WacodisBackendConfig" />
