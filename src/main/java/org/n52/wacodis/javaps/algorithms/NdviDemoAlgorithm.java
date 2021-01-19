@@ -16,6 +16,7 @@ import org.n52.javaps.algorithm.annotation.LiteralInput;
 import org.n52.javaps.io.GenericFileData;
 import org.n52.wacodis.javaps.WacodisProcessingException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
+import org.n52.wacodis.javaps.command.SingleCommandValue;
 import org.n52.wacodis.javaps.io.data.binding.complex.GeotiffFileDataBinding;
 import org.n52.wacodis.javaps.io.data.binding.complex.ProductMetadataBinding;
 import org.n52.wacodis.javaps.io.http.SentinelFileDownloader;
@@ -119,8 +120,9 @@ public class NdviDemoAlgorithm extends AbstractAlgorithm {
         Map<String, AbstractCommandValue> inputArgumentValues = new HashMap();
 
         File sentinelFile = this.preprocessOpticalImages();
-        String path = sentinelFile.getPath();
-        inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES", this.createInputValue("", sentinelFile, true));
+        String [] paths = sentinelFile.getPath().split("/code");
+
+        inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES", this.createInputValue(paths[1], sentinelFile, true));
         setProductName(String.join("",
                 FilenameUtils.getBaseName(sentinelFile.getName()),
                 "_NDVI_10m",
@@ -131,13 +133,25 @@ public class NdviDemoAlgorithm extends AbstractAlgorithm {
         return inputArgumentValues;
     }
 
+    /**
+     * Creates input argument values from an input data {@link File}
+     *
+     * @param basePath  base path where to read the input data from
+     * @param inputData input data as {@link File}
+     * @return {@link AbstractCommandValue} that encapsulates an input data file
+     * path
+     * @throws WacodisProcessingException
+     */
+    @Override
+    protected AbstractCommandValue createInputValue(String basePath, File inputData, boolean forUnix) {
+        String path = FilenameUtils.concat(basePath, inputData.getName());
+        return forUnix ? new SingleCommandValue(FilenameUtils.separatorsToUnix(path)) : new SingleCommandValue(path);
+    }
+
     private File preprocessOpticalImages() throws WacodisProcessingException {
         try {
-            File sentinelFile = sentinelDownloader.downloadSentinelFile(
-                    this.opticalImagesSource,
-                    this.getBackendConfig().getWorkingDirectory());
+            File sentinelFile = new File(this.opticalImagesSource);
             this.sentinelProduct = ProductIO.readProduct(sentinelFile.getPath());
-
             return sentinelFile;
 
         } catch (IOException ex) {
