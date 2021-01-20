@@ -120,7 +120,7 @@ public class NdviDemoAlgorithm extends AbstractAlgorithm {
         Map<String, AbstractCommandValue> inputArgumentValues = new HashMap();
 
         File sentinelFile = this.preprocessOpticalImages();
-        String [] paths = sentinelFile.getPath().split("/code");
+        String [] paths = sentinelFile.getPath().split("/codede");
 
         inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES", this.createInputValue(paths[1], sentinelFile, true));
         setProductName(String.join("",
