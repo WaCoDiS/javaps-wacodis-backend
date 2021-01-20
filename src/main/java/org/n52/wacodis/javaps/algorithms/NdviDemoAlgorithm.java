@@ -120,9 +120,9 @@ public class NdviDemoAlgorithm extends AbstractAlgorithm {
         Map<String, AbstractCommandValue> inputArgumentValues = new HashMap();
 
         File sentinelFile = this.preprocessOpticalImages();
-        String [] paths = sentinelFile.getPath().split("/codede");
+        String[] paths = sentinelFile.getPath().split("/codede");
 
-        inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES", this.createInputValue(paths[1], sentinelFile, true));
+        inputArgumentValues.put("RAW_OPTICAL_IMAGES_SOURCES", this.createInputValue(paths[1], true));
         setProductName(String.join("",
                 FilenameUtils.getBaseName(sentinelFile.getName()),
                 "_NDVI_10m",
@@ -131,6 +131,18 @@ public class NdviDemoAlgorithm extends AbstractAlgorithm {
 //        inputArgumentValues.put("RESULT_PATH", this.getResultPath("/output/"));
 
         return inputArgumentValues;
+    }
+
+    /**
+     * Creates input argument values from an input path
+     *
+     * @param path path where to read the input data from
+     * @return {@link AbstractCommandValue} that encapsulates an input data file
+     * path
+     * @throws WacodisProcessingException
+     */
+    protected AbstractCommandValue createInputValue(String path, boolean forUnix) {
+        return forUnix ? new SingleCommandValue(FilenameUtils.separatorsToUnix(path)) : new SingleCommandValue(path);
     }
 
     /**
