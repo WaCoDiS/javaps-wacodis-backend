@@ -63,8 +63,7 @@ public class EoToolExecutor {
         DockerController dockerController = initDockerController(dockerConfig);
         DockerRunCommandConfiguration dockerRunConfig = this.initRunConfiguration(cmdConfig, input);
 //        dockerRunConfig.addVolumeBinding(concatVolumeBinding(this.config.getWorkingDirectory(), dockerConfig.getWorkDir()));
-//        dockerRunConfig.addVolumeBinding(concatVolumeBinding("/codede/", "/input/"));
-        dockerRunConfig.addVolumeBinding(concatVolumeBinding("C:/Users/Sebastian/Entwicklung/Projekte/HSBO/wacodis/wps", "/input/"));
+        dockerRunConfig.addVolumeBinding(concatVolumeBinding("/codede/", "/input/"));
         dockerRunConfig.addVolumeBinding(concatVolumeBinding(this.config.getWorkingDirectory(), "/output/"));
 
         DockerContainer dockerContainer = new DockerContainer(dockerConfig.getContainer(), dockerConfig.getImage());
