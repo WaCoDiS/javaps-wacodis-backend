@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.n52.wacodis.javaps.preprocessing.graph;
+package org.n52.wacodis.javaps.preprocessing.graph.featurecollection;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
@@ -12,8 +12,7 @@ import org.n52.wacodis.javaps.WacodisProcessingException;
 
 import static org.n52.wacodis.javaps.utils.GeometryUtils.decodeCRS;
 
-import org.n52.wacodis.javaps.utils.GeometryUtils;
-import org.opengis.referencing.FactoryException;
+import org.n52.wacodis.javaps.preprocessing.graph.InputDataOperator;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

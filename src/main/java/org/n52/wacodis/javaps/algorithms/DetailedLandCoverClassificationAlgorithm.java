@@ -5,23 +5,11 @@
  */
 package org.n52.wacodis.javaps.algorithms;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.io.FilenameUtils;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.n52.javaps.algorithm.annotation.Algorithm;
-import org.n52.javaps.algorithm.annotation.ComplexInput;
-import org.n52.javaps.algorithm.annotation.ComplexOutput;
-import org.n52.javaps.algorithm.annotation.Execute;
-import org.n52.javaps.algorithm.annotation.LiteralInput;
+import org.n52.javaps.algorithm.annotation.*;
 import org.n52.javaps.gt.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.javaps.io.GenericFileData;
 import org.n52.wacodis.javaps.GeometryParseException;
@@ -39,30 +27,35 @@ import org.n52.wacodis.javaps.preprocessing.graph.PreprocessingExecutor;
 import org.n52.wacodis.javaps.preprocessing.graph.featurecollection.ReprojectingOperator;
 import org.n52.wacodis.javaps.preprocessing.graph.featurecollection.ShapeWriter;
 import org.n52.wacodis.javaps.preprocessing.graph.featurecollection.TrainDataOperator;
+import org.n52.wacodis.javaps.preprocessing.graph.filedata.FileDataWriter;
 import org.n52.wacodis.javaps.utils.GeometryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
 /**
  * @author <a href="mailto:s.drost@52north.org">Sebastian Drost</a>
  */
 @Algorithm(
-        identifier = "de.hsbo.wacodis.land_cover_classification",
-        title = "Land Cover Classification",
-        abstrakt = "Perform a land cover classification for optical images.",
+        identifier = "de.hsbo.wacodis.detailed_land_cover_classification",
+        title = "Detailed Land Cover Classification",
+        abstrakt = "Perform a detailed  land cover classification for optical images.",
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
-public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
+public class DetailedLandCoverClassificationAlgorithm extends AbstractAlgorithm {
 
-    private static final String PROCESS_ID = "de.hsbo.wacodis.land_cover_classification";
+    private static final String PROCESS_ID = "de.hsbo.wacodis.detailed_land_cover_classification";
     private static final String TIFF_EXTENSION = ".tif";
-    private static final String RESULTNAMEPREFIX = "land_cover_classification_result";
-    private static final String TOOL_CONFIG = "land-cover-classification.yml";
+    private static final String RESULTNAMEPREFIX = "detailed_land_cover_classification_result";
+    private static final String TOOL_CONFIG = "detailed-land-cover-classification.yml";
     private static final String GPF_FILE = "S2_GeoTIFF_Composition.xml";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LandCoverClassificationAlgorithm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DetailedLandCoverClassificationAlgorithm.class);
 
     @Autowired
     private SentinelFileDownloader sentinelDownloader;
@@ -70,6 +63,8 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
     private List<String> opticalImagesSources;
     private String areaOfInterest;
     private SimpleFeatureCollection referenceData;
+    private SimpleFeatureCollection waterData, industryData;
+    private GenericFileData elevationData;
     private ProductMetadata productMetadata;
     private List<Product> sentinelProductList;
 
@@ -78,7 +73,7 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
             title = "Optical images sources",
             abstrakt = "Sources for the optical images",
             minOccurs = 1,
-            maxOccurs = 1)
+            maxOccurs = 10)
     public void setOpticalImagesSources(List<String> value) {
         this.opticalImagesSources = value;
     }
@@ -96,13 +91,49 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
     @ComplexInput(
             identifier = "REFERENCE_DATA",
             title = "Reference data",
-            abstrakt = "Reference data for land cover classification",
+            abstrakt = "Reference data for detailed land cover classification",
             minOccurs = 1,
             maxOccurs = 1,
             binding = GTVectorDataBinding.class
     )
     public void setReferenceData(SimpleFeatureCollection value) {
         this.referenceData = value;
+    }
+
+    @ComplexInput(
+            identifier = "ATKIS_WATER_DATA",
+            title = "Atkis Water Reference data",
+            abstrakt = "Atkis Water Reference data for detailed land cover classification",
+            minOccurs = 1,
+            maxOccurs = 1,
+            binding = GTVectorDataBinding.class
+    )
+    public void setWaterData(SimpleFeatureCollection value) {
+        this.waterData = value;
+    }
+
+    @ComplexInput(
+            identifier = "ATKIS_INDUSTRY_DATA",
+            title = "Atkis Industry Reference data",
+            abstrakt = "Atkis Industry Reference data for detailed land cover classification",
+            minOccurs = 1,
+            maxOccurs = 1,
+            binding = GTVectorDataBinding.class
+    )
+    public void setIndustryData(SimpleFeatureCollection value) {
+        this.industryData = value;
+    }
+
+    @ComplexInput(
+            identifier = "ELEVATION_DATA",
+            title = "Elevation data",
+            abstrakt = "Elevation data for detialed land cover classification",
+            minOccurs = 1,
+            maxOccurs = 1,
+            binding = GeotiffFileDataBinding.class
+    )
+    public void setElevationData(GenericFileData value) {
+        this.elevationData = value;
     }
 
     @ComplexOutput(
@@ -128,7 +159,7 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
     }
 
     @Override
-    public String getProcessId(){
+    public String getProcessId() {
         return PROCESS_ID;
     }
 
@@ -153,6 +184,9 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
 
         inputArgumentValues.put("OPTICAL_IMAGES_SOURCES", this.createInputValue(basePath, this.preprocessOpticalImages(), true));
         inputArgumentValues.put("REFERENCE_DATA", this.createInputValue(basePath, this.preprocessReferenceData(), true));
+        inputArgumentValues.put("ATKIS_WATER_DATA", this.createInputValue(basePath, this.preprocessWaterData(), true));
+        inputArgumentValues.put("ATKIS_INDUSTRY_DATA", this.createInputValue(basePath, this.preprocessIndustryData(), true));
+        inputArgumentValues.put("ELEVATION_DATA", this.createInputValue(basePath, this.preprocessElevationData(), true));
         inputArgumentValues.put("RESULT_PATH", this.getResultPath(basePath));
 
         return inputArgumentValues;
@@ -217,6 +251,46 @@ public class LandCoverClassificationAlgorithm extends AbstractAlgorithm {
         File preprocessedReferenceData = referencePreprocessor.executeOperators(this.referenceData);
 
         return preprocessedReferenceData;
+    }
+
+    private File preprocessWaterData() throws WacodisProcessingException {
+
+        String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
+        InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_water_" + fileIdentifier + ".shp"));
+
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(this.getBackendConfig().getEpsg());
+        List<InputDataOperator> waterDataOperatorList = new ArrayList<>();
+        waterDataOperatorList.add(reprojectingOperator);
+
+        PreprocessingExecutor waterPreprocessor = new PreprocessingExecutor(shapeWriter, waterDataOperatorList);
+        File preprocessedWaterData = waterPreprocessor.executeOperators(this.waterData);
+
+        return preprocessedWaterData;
+    }
+
+    private File preprocessIndustryData() throws WacodisProcessingException {
+
+        String fileIdentifier = (this.getNamingSuffix() != null) ? this.getNamingSuffix() : UUID.randomUUID().toString();
+        InputDataWriter shapeWriter = new ShapeWriter(new File(this.getBackendConfig().getWorkingDirectory(), "wacodis_industry_" + fileIdentifier + ".shp"));
+
+        InputDataOperator reprojectingOperator = new ReprojectingOperator(this.getBackendConfig().getEpsg());
+        List<InputDataOperator> industryDataOperatorList = new ArrayList<>();
+        industryDataOperatorList.add(reprojectingOperator);
+
+        PreprocessingExecutor industryPreprocessor = new PreprocessingExecutor(shapeWriter, industryDataOperatorList);
+        File preprocessedIndustryData = industryPreprocessor.executeOperators(this.industryData);
+
+        return preprocessedIndustryData;
+    }
+
+    private File preprocessElevationData() throws WacodisProcessingException {
+
+        InputDataWriter fileDataWriter = new FileDataWriter(new File(this.getBackendConfig().getWorkingDirectory()));
+
+        PreprocessingExecutor fileDataPreprocessor = new PreprocessingExecutor(fileDataWriter, Collections.EMPTY_LIST);
+        File preprocessedElevationData = fileDataPreprocessor.executeOperators(this.elevationData);
+
+        return preprocessedElevationData;
     }
 
 }
