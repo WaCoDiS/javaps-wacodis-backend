@@ -41,18 +41,18 @@ import java.util.*;
  * @author <a href="mailto:s.drost@52north.org">Sebastian Drost</a>
  */
 @Algorithm(
-        identifier = "de.hsbo.wacodis.detailed_land_cover_classification",
-        title = "Detailed Land Cover Classification",
-        abstrakt = "Perform a detailed  land cover classification for optical images.",
+        identifier = "de.hsbo.wacodis.intraannual_land_cover_classification",
+        title = "Intraannual Land Cover Classification",
+        abstrakt = "Perform a intraannual  land cover classification for optical images.",
         version = "1.0.0",
         storeSupported = true,
         statusSupported = true)
 public class IntraannualLandCoverClassificationAlgorithm extends AbstractAlgorithm {
 
-    private static final String PROCESS_ID = "de.hsbo.wacodis.detailed_land_cover_classification";
+    private static final String PROCESS_ID = "de.hsbo.wacodis.intraannual_land_cover_classification";
     private static final String TIFF_EXTENSION = ".tif";
-    private static final String RESULTNAMEPREFIX = "detailed_land_cover_classification_result";
-    private static final String TOOL_CONFIG = "detailed-land-cover-classification.yml";
+    private static final String RESULTNAMEPREFIX = "intraannual_land_cover_classification_result";
+    private static final String TOOL_CONFIG = "intraannual-land-cover-classification.yml";
     private static final String GPF_FILE = "S2_GeoTIFF_Composition.xml";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntraannualLandCoverClassificationAlgorithm.class);
