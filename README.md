@@ -73,7 +73,20 @@ EO tools.
 
 ## Installation / Building Information
 ### Build from Source
-TODO
+Again, JavaPS WaCoDiS Backend serves as an extra module for [javaPS](https://github.com/52North/javaPS) and therefore is
+not executable standalone. For building both, an JavaPS WaCoDiS Backend artifact and an executable javaPS WAR file, follow
+the steps listed below:
+1. Build the JavaPS WaCoDiS Backend with `mvn clean install` from the project root.
+2. Checkout https://github.com/52North/javaPS from GitHub. However, we recommend using our [javaPS fork](https://github.com/WaCoDiS/javaPS)
+which provides a branch https://github.com/WaCoDiS/javaPS/tree/wacodis-developments that contains some custom adjustments
+to work well with our backend.
+3. Build the javaPS but omit the webapp module. Just run `mvn clean install -DskipTests -pl !webapp` from the javaPS
+project root.
+4. Replace the _pom.xml_ inside the javaPS webapp module with the (custom-webapp-pom.xml)[./docker/custom-webapp-pom.xml].
+5. Build the javaPS webapp module by running `mvn -f ./webapp/custom-webapp-pom.xml package -DskipTests -Denforcer.skip=true`
+from the javaPS project root.
+6. The _target_ folder within the javaPS webapp module contains a WAR file that can be used e.g., for a Tomcat deployment. 
+ 
 ### Build using Docker
 For building a javaPS docker image run `docker build -t wacodis/javaps:latest --build-arg CACHE_DATE=$(date) .`.
 The build time argument `CACHE_DATE` can be used to invalidate cache in order to only build the changed _javaps-wacodis-backend_.
