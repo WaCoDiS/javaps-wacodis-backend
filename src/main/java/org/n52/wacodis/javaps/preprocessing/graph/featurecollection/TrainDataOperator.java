@@ -13,7 +13,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.preprocessing.graph.InputDataOperator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

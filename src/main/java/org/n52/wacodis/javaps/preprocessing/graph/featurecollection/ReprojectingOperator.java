@@ -7,8 +7,8 @@ package org.n52.wacodis.javaps.preprocessing.graph.featurecollection;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
-import org.n52.wacodis.javaps.GeometryParseException;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.GeometryParseException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 
 import static org.n52.wacodis.javaps.utils.GeometryUtils.decodeCRS;
 

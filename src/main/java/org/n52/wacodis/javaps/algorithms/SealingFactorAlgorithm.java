@@ -11,7 +11,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.javaps.algorithm.annotation.*;
 import org.n52.javaps.gt.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.javaps.io.GenericFileData;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
 import org.n52.wacodis.javaps.io.data.binding.complex.GeotiffFileDataBinding;
 import org.n52.wacodis.javaps.io.data.binding.complex.ProductMetadataBinding;

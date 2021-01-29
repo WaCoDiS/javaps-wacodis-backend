@@ -12,7 +12,7 @@ import org.n52.javaps.algorithm.annotation.ComplexOutput;
 import org.n52.javaps.algorithm.annotation.Execute;
 import org.n52.javaps.algorithm.annotation.LiteralInput;
 import org.n52.javaps.io.GenericFileData;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.io.data.binding.complex.GeotiffFileDataBinding;
 import org.n52.wacodis.javaps.io.data.binding.complex.ProductMetadataBinding;
 import org.n52.wacodis.javaps.io.metadata.ProductMetadata;

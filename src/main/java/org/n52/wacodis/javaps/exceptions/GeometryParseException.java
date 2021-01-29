@@ -1,4 +1,4 @@
-package org.n52.wacodis.javaps;
+package org.n52.wacodis.javaps.exceptions;
 
 /**
  * An exception that will be thrown if a geometry can not be parsed out of the String that includes the geometry.

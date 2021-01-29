@@ -4,7 +4,7 @@ services:
     build: .
     image: wacodis/javaps-wacodis-backend:1.1.3
     env_file:
-      - ./docker/wacodis.env
+      - ./wacodis.env
     ports:
       - 8081:8080
     deploy:
@@ -19,7 +19,7 @@ services:
       SERVICE_PROVIDER_INDIVIDUAL_NAME: TBA
       SERVICE_PROVIDER_POSITION_NAME: First Line Supporter (24/7)
     volumes:
-      - ./docker/config/tools:/tmp/tools
-      - ./docker/config/gpf:/tmp/gpf
-      - ./docker/outputs:/tmp/workdir
+      - ./config/tools:/tmp/tools
+      - ./config/gpf:/tmp/gpf
+      - ./outputs:/tmp/workdir
       - /var/run/docker.sock:/var/run/docker.sock

@@ -6,7 +6,7 @@
 package org.n52.wacodis.javaps.preprocessing.graph;
 
 import java.io.File;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 
 /**
  * Interface for writing an input in a certain file format to a target

@@ -5,7 +5,7 @@
  */
 package org.n52.wacodis.javaps.preprocessing.graph;
 
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 
 /**
  * Operator for performing a single unit of preprocessing for certain input

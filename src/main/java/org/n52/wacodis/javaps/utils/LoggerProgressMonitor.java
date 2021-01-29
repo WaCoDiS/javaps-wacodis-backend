@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.n52.wacodis.javaps;
+package org.n52.wacodis.javaps.utils;
 
 import com.bc.ceres.core.ProgressMonitor;
 import org.slf4j.Logger;

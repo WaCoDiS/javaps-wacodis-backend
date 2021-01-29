@@ -6,15 +6,9 @@
 package org.n52.wacodis.javaps.utils;
 
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.crs.DefaultProjectedCRS;
-import org.n52.wacodis.javaps.GeometryParseException;
+import org.n52.wacodis.javaps.exceptions.GeometryParseException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.ParseException;
 
 /**
  * Helper class for handling geometries and Strings containing geometries

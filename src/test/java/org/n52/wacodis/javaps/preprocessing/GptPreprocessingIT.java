@@ -17,7 +17,6 @@ package org.n52.wacodis.javaps.preprocessing;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -25,18 +24,15 @@ import java.util.HashMap;
 import org.apache.commons.io.FileUtils;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
-import org.geotools.referencing.CRS;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.n52.wacodis.javaps.WacodisConfigurationException;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.configuration.OpenAccessHubConfig;
 import org.n52.wacodis.javaps.io.http.SentinelFileDownloader;
-import org.opengis.referencing.FactoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

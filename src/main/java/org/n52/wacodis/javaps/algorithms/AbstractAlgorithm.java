@@ -17,7 +17,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.esa.snap.core.dataio.ProductIO;
 import org.esa.snap.core.datamodel.Product;
 import org.n52.javaps.io.GenericFileData;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.algorithms.execution.EoToolExecutor;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
 import org.n52.wacodis.javaps.command.MultipleCommandValue;

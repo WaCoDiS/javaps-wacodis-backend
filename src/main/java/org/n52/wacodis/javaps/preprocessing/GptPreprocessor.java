@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.esa.snap.core.datamodel.Product;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.preprocessing.gpt.GptArguments;
 import org.n52.wacodis.javaps.preprocessing.gpt.GptExecutor;
 import org.slf4j.Logger;

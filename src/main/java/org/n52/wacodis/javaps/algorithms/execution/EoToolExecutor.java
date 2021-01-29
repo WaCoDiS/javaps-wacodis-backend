@@ -10,7 +10,7 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.n52.wacodis.javaps.WacodisConfigurationException;
+import org.n52.wacodis.javaps.exceptions.WacodisConfigurationException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
 import org.n52.wacodis.javaps.command.CommandParameter;
 import org.n52.wacodis.javaps.command.MultipleCommandValue;
@@ -49,7 +49,7 @@ public class EoToolExecutor {
      * @param config defines docker image and run command parameters
      * @return
      * @throws InterruptedException
-     * @throws org.n52.wacodis.javaps.WacodisConfigurationException
+     * @throws org.n52.wacodis.javaps.exceptions.WacodisConfigurationException
      */
     public ProcessResult executeTool(Map<String, AbstractCommandValue> input, ToolConfig config) throws InterruptedException, WacodisConfigurationException {
         LOGGER.debug("Configure execution of EO tool: " + config.getId()

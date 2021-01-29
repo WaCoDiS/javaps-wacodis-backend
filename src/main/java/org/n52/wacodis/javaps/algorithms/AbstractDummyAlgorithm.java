@@ -7,7 +7,7 @@ package org.n52.wacodis.javaps.algorithms;
 
 import org.apache.commons.io.FileUtils;
 import org.n52.javaps.io.GenericFileData;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
 import org.n52.wacodis.javaps.configuration.tools.ToolConfig;
 import org.slf4j.Logger;

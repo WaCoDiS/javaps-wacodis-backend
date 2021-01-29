@@ -7,7 +7,7 @@ package org.n52.wacodis.javaps.preprocessing.gpt;
 
 import java.util.Map;
 import org.esa.snap.core.gpf.main.GPT;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

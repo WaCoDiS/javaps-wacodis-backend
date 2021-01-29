@@ -1,7 +1,7 @@
 package org.n52.wacodis.javaps.preprocessing.graph.filedata;
 
 import org.n52.javaps.io.GenericFileData;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.n52.wacodis.javaps.preprocessing.graph.InputDataWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

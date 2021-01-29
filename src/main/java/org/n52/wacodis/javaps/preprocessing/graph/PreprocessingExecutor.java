@@ -8,7 +8,7 @@ package org.n52.wacodis.javaps.preprocessing.graph;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.n52.wacodis.javaps.WacodisProcessingException;
+import org.n52.wacodis.javaps.exceptions.WacodisProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

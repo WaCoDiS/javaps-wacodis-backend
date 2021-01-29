@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.n52.wacodis.javaps.WacodisConfigurationException;
+import org.n52.wacodis.javaps.exceptions.WacodisConfigurationException;
 import org.n52.wacodis.javaps.command.AbstractCommandValue;
 import org.n52.wacodis.javaps.command.MultipleCommandValue;
 import org.n52.wacodis.javaps.command.SingleCommandValue;
