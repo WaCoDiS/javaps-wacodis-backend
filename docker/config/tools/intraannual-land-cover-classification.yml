@@ -1,0 +1,43 @@
+id: intraannual-land-cover-classification
+docker:
+    host: unix:///var/run/docker.sock
+    image: dev.eftas.com:5000/eftas/de.eftas.wacodis.eo.imagelearn:latest
+    container: wacodis-eo-imagelearn
+    workDir: /public
+command:
+    folder: python
+    name: workflow.py
+    arguments:
+        - name: -image
+          type: wps-process-reference
+          value: OPTICAL_IMAGES_SOURCES
+          quantity: multiple
+        - name: -reference
+          type: wps-process-reference
+          value: REFERENCE_DATA
+          quantity: single
+        - name: -watermask
+          type: wps-process-reference
+          value: ATKIS_WATER_DATA
+          quantity: single
+        - name: -industry
+          type: wps-process-reference
+          value: ATKIS_INDUSTRY_DATA
+          quantity: single
+        - name: -elevation
+          type: wps-process-reference
+          value: ELEVATION_DATA
+          quantity: single
+#        - name: -classified
+#          type: wps-process-reference
+#          value: RESULT_PATH
+#          quantity: single
+        - name: -intraannual_ruleset
+          type: static-option
+          value: "{ \"feature\": \"ndvi\", \"threshold\": 0.55, \"remap\": [ { \"class\": 1, \"name\": \"Mais\", \"rules\": [ { \"condition\": \"lt\", \"time\": { \"month.from\": 1, \"month.to\": 12 }, \"target\": { \"class\": 121, \"name\": \"Offenboden(Mais)\" } }, { \"condition\": \"ge\", \"time\": { \"month.from\": 9, \"month.to\": 12 }, \"target\": { \"class\": 122, \"name\": \"Zwischenfrucht(Mais)\" } } ] }, { \"class\": 15, \"name\": \"Raps\", \"rules\": [ { \"condition\": \"lt\", \"time\": \"always\", \"target\": { \"class\": 123, \"name\": \"Offenboden(Raps)\" } }, { \"condition\": \"ge\", \"time\": { \"month.from\": 11, \"month.to\": 4 }, \"target\": { \"class\": 124, \"name\": \"Zwischenfrucht(Mais)\" } } ] }, { \"class\": 2, \"name\": \"Sonstiges\", \"rules\": [ { \"condition\": \"lt\", \"time\": \"always\", \"target\": { \"class\": 120, \"name\": \"Offenboden(Sonstiges)\" } } ] } ]}" 
+          quantity: single
+        - name: -intraannual_resultstack
+          type: wps-process-reference
+          value: RESULT_PATH
+          quantity: single
+
