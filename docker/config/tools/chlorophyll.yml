@@ -1,0 +1,18 @@
+id: chlorophyll
+docker:
+    host: unix:///var/run/docker.sock
+    image: py_to_docker:chlorophyll
+    container: wacodis-eo-chlorophyll
+    workDir: /public
+command:
+    folder: python
+    name: chlorophyll.py
+    arguments:
+        - name: -input
+          type: wps-process-reference
+          value: RAW_OPTICAL_IMAGES_SOURCES
+          quantity: single
+        - name: -output
+          type: wps-process-reference
+          value: RESULT_PATH
+          quantity: single
