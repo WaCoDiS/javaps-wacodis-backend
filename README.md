@@ -55,12 +55,12 @@ Especially, the processing algorithms depends on the javaPS Core Engine module. 
 data formats are reused from [javaPS IO-handler](https://github.com/52North/javaps-iohandler) and
 [javaPS GeoTools IO-handler](https://github.com/52North/javaps-iohandler-gt).
 * __GeoTools__  
-The [GeoTools library](https://geotools.org/) is used for common vector data preprocessing tasks.
-*__SentiNel Application Platform__  
+The [GeoTools library](https://geotools.org/) is used for common vector data preprocessing tasks.  
+* __SentiNel Application Platform__  
 For Copernicus sattelite data preprocessing, several processes make use of the ESA's SentiNel Application Platform
 via Java API. Therefore, the backend depends on [SNAP Engine](https://github.com/senbox-org/snap-engine) as well as on
 [Sentinel-1 toolbox](https://github.com/senbox-org/s1tbx) and [Sentinel-2 toolbox](https://github.com/senbox-org/s2tbx). 
-*__docker-java__  
+* __docker-java__  
 The [Java API client for Docker](https://github.com/docker-java/docker-java) for Docker is used for executing dockerized
 EO tools.
 
@@ -133,7 +133,7 @@ simply start the container with docker-compose. A _docker-compose.yml_ is provid
 Just run `docker-compose --compatibility up`. The `--compatibility` flag enables memory configurations specified within 
 the _docker-compose.yml_.  
 
-If you prefer `docker run` you can also execute `docker run -p 8080:8080 --env-file ./wacodis.env wacodis/javaps:latest `
+If you prefer _docker run_ you can also execute `docker run -p 8080:8080 --env-file ./wacodis.env wacodis/javaps:latest `
 or any similar command.
 
 Be sure to overwrite the properties in `wacdodis.env` just to provide the credentials for the Copernicus Open Access Hub
@@ -151,7 +151,11 @@ specifies a Docker Host URL that points to the Unix socket, i.e. `unix:///var/ru
 javaPS on a Windows system change the Docker Host URL to `tcp://localhost:2376`.
 
 ## User Guide
-To execute WPS processes send your requests to the following endpoint: http://localhost:8080/wacodis-javaps/service.
+javaPS implements the [OGC WPS 2.0 interface](http://docs.opengeospatial.org/is/14-065/14-065.html). To execute WPS
+processes send your requests to the following endpoint: http://localhost:8080/wacodis-javaps/service. For convenience,
+you'll find a ready-to-use [Postman](https://www.postman.com/) collection that contains execution requests for all
+supported processes inside [docs folder](docs). Just import the collection within Postman, set appropriate values for
+the process inputs and send your POST requests to the WPS.
 
 ## Developer Information
 ### How to contribute
