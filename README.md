@@ -33,22 +33,15 @@ EO processing routines. Therefore, it is not executable as stand-alone applicati
 of javaPS.
 ### Packages
 The section below gives a comprehensive overview about the package structure:
-* org.n52.wacodis.javaps.algortihms
-Algorithms that serves as WPS processes
-* org.n52.wacodis.javaps.command
-Models for EO-tool execution commands provided by tool configuration files as well Docker execution handlers relying on
-[docker-java](https://github.com/docker-java/docker-java)
-* org.n52.wacodis.javaps.configuration
-Configuration models
-* org.n52.wacodis.javaps.exceptions
-Process related exceptions
-* org.n52.wacodis.javaps.io
-Encodings and decodings for WPS input data formats
-* org.n52.wacodis.javaps.preprocessing
-Several preprocessing routines for satellite and vector data based on [SNAP Engine](https://github.com/senbox-org/snap-engine)
-and [GeoTools library](https://geotools.org/)
-* org.n52.wacodis.javaps.utils
-Some utility classes to avoid boilerplate code
+* _org.n52.wacodis.javaps.algortihms_: Algorithms that serves as WPS processes
+* _org.n52.wacodis.javaps.command_: Models for EO-tool execution commands provided by tool configuration files as well
+as Docker execution handlers relying on [docker-java](https://github.com/docker-java/docker-java)
+* _org.n52.wacodis.javaps.configuration_: Configuration models
+* _org.n52.wacodis.javaps.exceptions_: Process related exceptions
+* _org.n52.wacodis.javaps.io_: Encodings and decodings for WPS input data formats
+* _org.n52.wacodis.javaps.preprocessing_: Several preprocessing routines for satellite and vector data based on
+[SNAP Engine](https://github.com/senbox-org/snap-engine) and [GeoTools library](https://geotools.org/)
+* _org.n52.wacodis.javaps.utils_: Some utility classes to avoid boilerplate code
 
 ### Technologies/Dependencies  
 * __Java__  
@@ -56,24 +49,24 @@ WaCoDiS Metadata Connector is tested with Oracle JDK 8 and OpenJDK 8. Unless sta
 used as well.
 * __Maven__  
 This project uses the build-management tool [Apache Maven](https://maven.apache.org/).
-* __javaPS__
+* __javaPS__  
 As a backend for [javaPS](https://github.com/52North/javaPS) the WaCoDiS Backend relies on different javaPS modules. 
 Especially, the processing algorithms depends on the javaPS Core Engine module. Furthermore, I/O handler for different
 data formats are reused from [javaPS IO-handler](https://github.com/52North/javaps-iohandler) and
 [javaPS GeoTools IO-handler](https://github.com/52North/javaps-iohandler-gt).
-* __GeoTools__
+* __GeoTools__  
 The [GeoTools library](https://geotools.org/) is used for common vector data preprocessing tasks.
-*__SentiNel Application Platform__
+*__SentiNel Application Platform__  
 For Copernicus sattelite data preprocessing, several processes make use of the ESA's SentiNel Application Platform
 via Java API. Therefore, the backend depends on [SNAP Engine](https://github.com/senbox-org/snap-engine) as well as on
 [Sentinel-1 toolbox](https://github.com/senbox-org/s1tbx) and [Sentinel-2 toolbox](https://github.com/senbox-org/s2tbx). 
-*__docker-java__
+*__docker-java__  
 The [Java API client for Docker](https://github.com/docker-java/docker-java) for Docker is used for executing dockerized
 EO tools.
 
 ## Installation / Building Information
 ### Build from Source
-Again, JavaPS WaCoDiS Backend serves as an extra module for [javaPS](https://github.com/52North/javaPS) and therefore is
+Again, javaPS WaCoDiS Backend serves as an extra module for [javaPS](https://github.com/52North/javaPS) and therefore is
 not executable standalone. For building both, an JavaPS WaCoDiS Backend artifact and an executable javaPS WAR file, follow
 the steps listed below:
 1. Build the JavaPS WaCoDiS Backend with `mvn clean install` from the project root.
@@ -85,24 +78,77 @@ project root.
 4. Replace the _pom.xml_ inside the javaPS webapp module with the (custom-webapp-pom.xml)[./docker/custom-webapp-pom.xml].
 5. Build the javaPS webapp module by running `mvn -f ./webapp/custom-webapp-pom.xml package -DskipTests -Denforcer.skip=true`
 from the javaPS project root.
-6. The _target_ folder within the javaPS webapp module contains a WAR file that can be used e.g., for a Tomcat deployment. 
+6. Deploy the WAR file, that have been built in the _target_ folder of the javaPS webapp module, within your favorite web
+server e.g. Tomcat. 
  
 ### Build using Docker
 For building a javaPS docker image run `docker build -t wacodis/javaps:latest --build-arg CACHE_DATE=$(date) .`.
 The build time argument `CACHE_DATE` can be used to invalidate cache in order to only build the changed _javaps-wacodis-backend_.
 
+For running the javaPS WaCoDiS Backend as Docker container, the [deployment section](#run-with-docker) provides some
+helpful information
+
 ### Configuration
-Be sure to overwrite the properties in `wacdodis.env` just to provide the credentials for the Copernicus Open Access Hub and to set a working directory.
-#### Parameters
-TODO
+To configure your javaPS instance including the WaCoDiS backend, you have to consider both the configuration related to
+javaPS and config parameters that directly refers to the backend.
+#### javaPS configuration
+You'll find the javaPS configuration file inside the webapp module within _src/main/webapp/WEB-INF/config_. Here you can
+set different parameters related to the server. Note, that you especially have to set the correct server URL for the
+`service.serviceURL` parameter so that javaPS generates proper download links for its outputs. In addition, all configuration
+parameters can be set via environment variables. E.g., `service.serviceURL` can be set via `SERVICE_SERVICE_URL`.  
+#### WaCoDiS backend configuration
+Configuration parameters meant for the javaPS WaCoDiS Backend can be defined inside the properties file
+_src/main/resources/wacodis-javaps.properties_ or as environment variables.  
+
+In order to access satellite data from [Copernicus Open Access Hub](https://scihub.copernicus.eu/) you have to specify
+valid credentials:  
+* `openaccesshub.username`: ESA Open Access Hub username
+* `openaccesshub.password`: ESA Open Access Hub password
+
+You also have to specify different directories to be used as working directory or to look for process related files: 
+* `wacodis.javaps.workdir`: Absoulte path to the working directory. All downloaded and preprocessed files will be
+stored at this location
+* `wacodis.javaps.toolconfigdir`: Absolute path to the directory which contains the config files for executing the EO tools
+* `wacodis.javaps.gpfdir`: Absolute path to the directory which contains the SNAP GPF XML-Files for preprocessing Sentinel satellite data.  
+
+Some additional parameters:
+* `wacodis.javaps.epsg`: EPSG code representing the reference coordinate system that will be used for reprojecting all
+input data.
+* `wacodis.javaps.sentineltestfile` (optional): Absolute path to a Sentinel-2 product in SAFE-format that can be used for
+ testing purposes in order to prevent downloading Sentinel-2 products from a certain platform, which may be very time-consuming.
+
+
 ## Deployment
 ### Dependencies
-TODO
+If you choose to build the project [from source](#build-from-source), the deployment of the javaPS WaCoDiS Backend highly
+depends on javaPS, since the backend can not be deployed standalone. In addition, a web container is required for deploying
+the javaPS including the bundled WaCoDiS Backend.  
+
+If you choose to build the project [with Docker](#build-using-docker), the deployment only depends on the availability
+of [Docker Engine](https://docs.docker.com) within your runtime environment. No additional software stacks are required
+in this case. 
 ### Run with Docker
-You can simply run the container with Compose. To enable memory configurations use the following command: `docker-compose --compatibility up`
-If you prefer `docker run` you can also use `docker run -p 8080:8080 --env-file ./wacodis.env wacodis/javaps:1.x ` or execute a customized command.
+A pre-built Docker image can be pulled from [DockerHub](https://hub.docker.com/r/wacodis/javaps-wacodis-backend). You can
+simply start the container with docker-compose. A _docker-compose.yml_ is provided within the [docker directory](docker).
+Just run `docker-compose --compatibility up`. The `--compatibility` flag enables memory configurations specified within 
+the _docker-compose.yml_.  
+
+If you prefer `docker run` you can also execute `docker run -p 8080:8080 --env-file ./wacodis.env wacodis/javaps:latest `
+or any similar command.
+
+Be sure to overwrite the properties in `wacdodis.env` just to provide the credentials for the Copernicus Open Access Hub
+and to set the working directories. The [docker directory](docker) also contains [configuration files used for the execution
+of containerized EO-tools](docker/config/tools) as well as [graph XML files for running GPF graphs](docker/config/gpf).
+Just copy those files to a new location and point the relevant properties within `wacdodis.env` to this location. 
 ### Run with Tomcat
-TODO
+To run javaPS including the WaCoDiS Backend within a Tomcat instance, you first have to build the project [from source](#build-from-source).
+Be sure, you have set proper configuration parameters for [javaPS](#javaps-configuration) and [javaPS](#wacodis-backend-configuration)
+inside the configuration files or via environment variables. You'll find
+[configuration files used for the execution containerized EO-tools](docker/config/tools) as well as 
+[graph XML files for running GPF graphs](docker/config/gpf) inside the [docker directory](docker). Just point
+`wacodis.javaps.toolconfigdir` and `wacodis.javaps.gpfdir` to these locations. Note, that each EO-tool configuration
+specifies a Docker Host URL that points to the Unix socket, i.e. `unix:///var/run/docker.sock`. If you aim to run the
+javaPS on a Windows system change the Docker Host URL to `tcp://localhost:2376`.
 
 ## User Guide
 To execute WPS processes send your requests to the following endpoint: http://localhost:8080/wacodis-javaps/service.
@@ -122,6 +168,7 @@ TODO
 | Sebastian Drost | Bochum University of Applied Sciences | sebastian.drost@hs-bochum.de |
 | Arne Vogt | Bochum University of Applied Sciences | arne.vogt@hs-bochum.de |
 | Matthes Rieke | 52° North GmbH | m.rieke@52north.org |
+| Adrian Klink | EFTAS Fernerkundung Technologietransfer GmbH | adrian.klink@eftas.com |
 
 ## Credits and Contributing Organizations
 - Department of Geodesy, Bochum University of Applied Sciences, Bochum
