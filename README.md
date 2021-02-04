@@ -159,9 +159,47 @@ the process inputs and send your POST requests to the WPS.
 
 ## Developer Information
 ### How to contribute
-TODO
+#### Create custom processes
+You can simply develop your own algorithms as javaPS processes. Just follow the detailed
+[javaPS documentation](https://52north.github.io/javaPS/documentation_markdown/site/algorithm_definition/algorithm_definition/#javaps-documentation-adding-new-processesalgorithms).
+Of course, you can implement you algorithms however you want and use your favorite library to do so. However, we recommend
+following one of the patterns almost all the processes within this repository rely on.  
+#### GPF operators
+Some processes within this repository utilize the [SNAP Graph Processing Framework](https://senbox.atlassian.net/wiki/spaces/SNAP/pages/70503590/Creating+a+GPF+Graph)
+via Java API. Those algorithms rather execute single GPF operators in standalone mode without any complex graph definitions.
+Only a small subset of Sentinel-1 or Sentinel-2 toolbox operators are valuable, namely those which produce a
+ready-to-use product. Hence, some basic indices-based operators are embedded within separate algorithms so far. You will
+find those algorithms inside the _org.n52.wacodis.javaps.algortihms.package_.
+
+If you want to provide you own algorithm that
+makes use of SNAP GPF operators, just implement `AbstractSnapAlgorithm` which already provides some boilerplate code
+for executing operators via GPF. Make sure, you are confirm with all supported parameters for your operator. E.g., the
+parameters for the NDVI operator have been discovered from the [NdviOp class](https://github.com/senbox-org/snap-engine/blob/master/snap-ndvi/src/main/java/org/esa/snap/ndvi/NdviOp.java).  
+#### GPF preprocessing
+[SNAP Graph Processing Framework](https://senbox.atlassian.net/wiki/spaces/SNAP/pages/70503590/Creating+a+GPF+Graph) can not
+only be used for executing operators in standalone mode but also for applying complex preprocessing graphs on satellite data
+to prepare large datasets for the [execution via containerized EO-tools](#docker-processes). To do so, it
+is best practice to prepare your GPF graph via [SNAP](https://step.esa.int/main/download/snap-download/), export it as 
+XML file and add it to the javaPS. Finally, you can make use of `org.n52.wacodis.javaps.preprocessing.gpt.GptExecutor`
+to execute your graph as part of the preprocessing within your custom algorithm.
+#### Docker tools
+To get the best out of your satellite data processing and to generate valuable products, you can provide your processing
+algorithms as Docker containers that will be triggered by an WPS process.  
+1. Dockerize your EO-tool (e.g. a Python script) in a way that allows its execution and passing by required arguments
+at start-up time. Note, that all input and output data must be provided within a single working directory within the container
+which well be volume-binded to the javaPS working directory on the host.
+2. Provide a tool config file tha describes the execution of the dockerized EO-tool. You will find a template and several
+examples inside [docker/config/tools](docker/config/tools). Note that there are two types of command arguments that can
+be defined. `static-option` means the provided `value` will be used as is for the execution command. In contrast, 
+`wps-process-reference` arguments must explicitly be defined inside the WPS process and its values will be set at runtime.
+Have a look on how this is done for [VegetationDensityNdviAlgorithm](https://github.com/WaCoDiS/javaps-wacodis-backend/blob/b8e246cee48ab3357defc0149bccf8eb930bff22/src/main/java/org/n52/wacodis/javaps/algorithms/VegetationDensityNdviAlgorithm.java#L110-L118).
+3. Implement `org.n52.wacodis.javaps.algorithms.AbstractAlgorithm` which provides several reusable methods. Simply follow
+the way this have been already done for the existing algorithms inside _org.n52.wacodis.javaps.algortihms_.
+4. Register your algorithm as a component within [wacodis-backend.xml]src/main/resources/components/wacodis-backend.xml).
+5. Have fun with your custom algorithm.
+
 ### Branching
-The master branch provides sources for stable builds. The develop branch represents the latest (maybe unstable)
+The master branch provides sources for stable builds. The _develop_ branch represents the latest (maybe unstable)
 state of development.
 ### License and Third Party Lib POM Plugins
 TODO
