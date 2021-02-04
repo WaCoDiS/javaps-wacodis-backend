@@ -3,6 +3,16 @@
 Processing backend for javaPS (OGC WPS implementation) containing processes related to the WaCoDiS project for creating
 Earth Observation products.
 
+**Table of Content**  
+1. [WaCoDiS Project Information](#wacodis-project-information)
+2. [Overview](#overview) 
+3. [Installation / Building Information](#installation--building-information)
+4. [Deployment](#deployment)
+5. [User Guide](#user-guide)
+6. [Developer Information](#developer-information)
+7. [Contact](#contact)
+8. [Credits and Contributing Organizations](#credits-and-contributing-organizations)
+
 ## WaCoDiS Project Information
 <p align="center">
   <img src="https://raw.githubusercontent.com/WaCoDiS/apis-and-workflows/master/misc/logos/wacodis.png" width="200">
@@ -178,7 +188,7 @@ parameters for the NDVI operator have been discovered from the [NdviOp class](ht
 #### GPF preprocessing
 [SNAP Graph Processing Framework](https://senbox.atlassian.net/wiki/spaces/SNAP/pages/70503590/Creating+a+GPF+Graph) can not
 only be used for executing operators in standalone mode but also for applying complex preprocessing graphs on satellite data
-to prepare large datasets for the [execution via containerized EO-tools](#docker-processes). To do so, it
+to prepare large datasets for the [execution via containerized EO-tools](#docker-tools). To do so, it
 is best practice to prepare your GPF graph via [SNAP](https://step.esa.int/main/download/snap-download/), export it as 
 XML file and add it to the javaPS. Finally, you can make use of `org.n52.wacodis.javaps.preprocessing.gpt.GptExecutor`
 to execute your graph as part of the preprocessing within your custom algorithm.
