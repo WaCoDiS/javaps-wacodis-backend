@@ -1,0 +1,30 @@
+# Unique name of the process related to this tool
+id: process-name
+docker:
+    # Docker Host URL. Either unix:///var/run/docker.sock for UNIX or tcp://localhost:2376 for Windows.
+    host: unix:///var/run/docker.sock
+    # Name of the Docker Image
+    image: image-name
+    # Name that will be used for container startup
+    container: container-name
+    # Working directory within the container
+    workDir: /public
+command:
+    # Folder, that contains the EO-tool script
+    folder: script-folder
+    # Name of the script to be executed
+    name: script-name
+    # Set of arguments that will be used for script execution
+    arguments:
+        - name: -input1
+          type: wps-process-reference
+          value: INPUT_1
+          quantity: single
+        - name: -input2
+          type: wps-process-reference
+          value: INPUT_2
+          quantity: multiple
+        - name: -input3
+          type: static-option
+          value: arg_value
+          quantity: single
