@@ -9,6 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
         <javaps.version>1.4.0</javaps.version>
         <iohandler.version>1.4.0</iohandler.version>
         <geotools.version>20.2</geotools.version>
