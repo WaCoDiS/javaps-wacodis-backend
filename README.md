@@ -96,7 +96,7 @@ For building a javaPS docker image run `docker build -t wacodis/javaps:latest --
 The build time argument `CACHE_DATE` can be used to invalidate cache in order to only build the changed _javaps-wacodis-backend_.
 
 For running the javaPS WaCoDiS Backend as Docker container, the [deployment section](#run-with-docker) provides some
-helpful information
+helpful information.
 
 ### Configuration
 To configure your javaPS instance including the WaCoDiS backend, you have to consider both the configuration related to
